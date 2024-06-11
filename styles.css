@@ -15,8 +15,35 @@ body {
 .saveLinks {
     position: flex;
     justify-content: center;
-    
+    font-size: 2rem;
+    background-image: linear-gradient(to right, #2600ff, #007bff, #1eff00, #f0b3b3, #ede1e1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: animateColor 4s linear infinite alternate-reverse;
 }
+
+@keyframes animateColor {
+    0% {
+        color: #ff2b2b;
+    }
+    25% {
+        color: #00000000;
+    }
+    50% {
+        color: #ff00e600;
+    }
+    75% {
+        color: #ff0000;
+    }
+    100% {
+        color: #00000000;
+    }
+}
+
+
+
+
 
 .container {
     padding: 20px;
