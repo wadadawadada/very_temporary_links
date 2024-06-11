@@ -1,0 +1,193 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    background: #000000;  /* fallback for old browsers */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+.saveLinks {
+    position: relative;
+    justify-content: center;
+}
+
+.container {
+    padding: 20px;
+    border-radius: 8px;
+    width: 30%;
+    margin-top: 420px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 7%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000000;
+    padding: 2rem;
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 50%;
+}
+
+input[type="url"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #00fc11;
+    border-radius: 25px;
+    background-color: #000000;
+    color: #0dff00;
+}
+
+button {
+    padding: 10px;
+    background-color: #00ff3c;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border-radius: 25px;
+    width: 100%;
+    border-color: #0dff00;
+    border-width: 1px;
+    border-style: solid;
+}
+
+button:hover {
+    background-color: #000000;
+    transition: all 0.3s ease-in-out;
+    color: #2fff00;
+    border-color: #0dff00;
+    border-width: 1px;
+    border-style: solid;
+}
+
+#linkList {
+    width: 100%;
+    padding-top: 650px; /* Добавьте верхний отступ */
+}
+
+.linkItem {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 80px;
+    position: relative;
+    background-color: #00000024;
+    padding: 2rem;
+    border-color: #0dff00;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 25px;
+    transition: all 0.4s ease-in-out;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.linkItem:hover {
+    box-shadow: 0 0 15px 5px #0dff009e;
+    transition: all 0.4s ease-in-out;
+}
+
+.linkItem img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 25px;
+    position: relative;
+}
+
+.linkItem a {
+    color: #3cff00;
+    text-decoration: none;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.linkItem a:hover {
+    text-decoration: underline;
+}
+
+.linkItem p {
+    margin: 0;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-color: #0dff00;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #000000;
+    color: rgb(24, 241, 0);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-btn:hover {
+    background-color: #1eff00;
+    color: rgb(0, 0, 0);
+}
+
+/* Custom scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+    width: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #00ff3c95;
+    border-radius: 1px;
+}
+
+/* Custom scrollbar for Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff3c8c #000000;
+}
+
+/* Custom scrollbar for Internet Explorer and Edge */
+::-ms-scrollbar {
+    width: 3px;
+}
+
+::-ms-scrollbar-track {
+    background: #000000;
+}
+
+::-ms-scrollbar-thumb {
+    background-color: #00ff3c;
+    border-radius: 10px;
+}
