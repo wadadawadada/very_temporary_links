@@ -194,14 +194,9 @@ button:hover {
 
 /* Мобильные стили */
 @media (max-width: 600px) {
-
-.body {
-    padding: 2rem;
-}
-
     .container {
-        width: 100%;
-        margin-top: 20px; /* Уменьшите отступ сверху для мобильных устройств */
+        width: 90%;
+        margin-top: 320px; /* Уменьшите отступ сверху для мобильных устройств */
     }
 
     form {
