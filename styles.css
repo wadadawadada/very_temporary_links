@@ -97,7 +97,7 @@ button:hover {
     margin-bottom: 40px; /* Уменьшите отступ для мобильных устройств */
     position: relative;
     background-color: #00000024;
-    padding: 1rem; /* Уменьшите padding для мобильных устройств */
+    padding: 2rem; /* Уменьшите padding для мобильных устройств */
     border-color: #0dff00;
     border-width: 1px;
     border-style: solid;
@@ -147,8 +147,8 @@ button:hover {
 
 .delete-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
     border-color: #0dff00;
     border-width: 1px;
     border-style: solid;
@@ -165,8 +165,11 @@ button:hover {
 }
 
 .delete-btn:hover {
-    background-color: #1eff00;
-    color: rgb(0, 0, 0);
+    background-color: #db0000;
+    border-color: #ff0000;
+    box-shadow: 0 0 7px 2px #ff0000;
+    scale: 1.2;
+    color: rgb(255, 255, 255);
 }
 
 /* Custom scrollbar for WebKit browsers */
