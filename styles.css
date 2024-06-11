@@ -9,10 +9,11 @@ body {
     margin: 0;
     flex-direction: column;
     overflow-x: hidden; /* Запретить горизонтальную прокрутку */
+    
 }
 
 .saveLinks {
-    position: relative;
+    position: flex;
     justify-content: center;
     
 }
@@ -20,8 +21,10 @@ body {
 .container {
     padding: 20px;
     border-radius: 8px;
-    width: 100%;
-    margin-top: 340px;
+    width: 90%;
+    margin-top: 50px;
+    justify-content: center;
+    position: flex;
 }
 
 h1 {
@@ -78,10 +81,14 @@ button:hover {
 }
 
 #linkList {
-    margin-left: 25%;
-    width: 50%;
-    padding-top: 75%; /* Добавьте верхний отступ */
-    
+    display: flex;
+    margin-left: 20%;
+    flex-direction: column;
+    width: 60%;
+    margin-top: 10%; /* Добавьте верхний отступ */
+    min-width: 500px;
+    max-height: 300px;
+    /* background-color: #1eff00; */
 }
 
 .linkItem {
@@ -99,6 +106,7 @@ button:hover {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 1s forwards;
+    
     
 }
 
