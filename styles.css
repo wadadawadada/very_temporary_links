@@ -14,6 +14,7 @@ body {
 .saveLinks {
     position: relative;
     justify-content: center;
+    
 }
 
 .container {
@@ -41,7 +42,7 @@ form {
     border-radius: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    width: 90%; /* Увеличить ширину для мобильных устройств */
+    width: 50%; /* Увеличить ширину для мобильных устройств */
 }
 
 input[type="url"] {
@@ -77,8 +78,10 @@ button:hover {
 }
 
 #linkList {
-    width: 100%;
-    padding-top: 150px; /* Добавьте верхний отступ */
+    margin-left: 25%;
+    width: 50%;
+    padding-top: 75%; /* Добавьте верхний отступ */
+    
 }
 
 .linkItem {
@@ -96,6 +99,7 @@ button:hover {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 1s forwards;
+    
 }
 
 @keyframes fadeIn {
