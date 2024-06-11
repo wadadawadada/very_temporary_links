@@ -20,8 +20,8 @@ body {
 .container {
     padding: 20px;
     border-radius: 8px;
-    width: 90%; /* Увеличить ширину для мобильных устройств */
-    margin-top: 100px;
+    width: 100%;
+    margin-top: 340px;
 }
 
 h1 {
@@ -197,3 +197,45 @@ button:hover {
 }
 
 
+@media (max-width: 600px) {
+
+    .body {
+       
+        height: auto;
+        padding: 2rem;
+    }
+
+
+    .saveLinks {
+        width: 100%;
+        
+    }
+
+    .container {
+        /* width: 90%; */
+        margin-top: 320px; /* Уменьшите отступ сверху для мобильных устройств */
+    }
+
+    form {
+        width: 90%; /* Увеличьте ширину формы для мобильных устройств */
+        padding: 1rem; /* Уменьшите padding формы для мобильных устройств */
+    }
+
+    .linkItem {
+        padding: 1rem; /* Уменьшите padding элементов для мобильных устройств */
+        width: 100%;
+    }
+
+    .linkItem a {
+        font-size: 1.2rem; /* Уменьшите размер шрифта для мобильных устройств */
+    }
+
+    #linkList {
+        padding-top: 100px; /* Уменьшите верхний отступ для мобильных устройств */
+            margin-left: 0%;
+            width:100%;
+            padding-top: 75%; /* Добавьте верхний отступ */
+            
+        }
+    
+}
