@@ -82,9 +82,9 @@ button:hover {
 
 #linkList {
     display: flex;
-    margin-left: 20%;
+    margin-left: 25%;
     flex-direction: column;
-    width: 60%;
+    width: 50%;
     margin-top: 10%; /* Добавьте верхний отступ */
     min-width: 500px;
     max-height: 300px;
