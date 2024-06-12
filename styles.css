@@ -1,19 +1,17 @@
 body {
     font-family: Arial, sans-serif;
     color: #ffffff;
-    background: #000000;  /* fallback for old browsers */
+    background: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     flex-direction: column;
-    overflow-x: hidden; /* Запретить горизонтальную прокрутку */
-    
+    overflow-x: hidden;
 }
 
 .saveLinksTitle {
-    position: flex;
     justify-content: center;
     font-size: 3rem;
     background-image: linear-gradient(to right, #2600ff, #007bff, #1eff00, #f0b3b3, #ede1e1);
@@ -42,18 +40,12 @@ body {
     }
 }
 
-
-
-
-
 .container {
     padding: 20px;
     border-radius: 8px;
     width: 90%;
     margin-top: 80px;
     justify-content: center;
-    position: flex;
-    
 }
 
 h1 {
@@ -74,7 +66,7 @@ form {
     border-radius: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    width: 50%; /* Увеличить ширину для мобильных устройств */
+    width: 50%;
 }
 
 input[type="url"] {
@@ -104,27 +96,17 @@ button {
 #buttonMenu {
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
 }
 
-#saveButton {
-    /* width: 85%; */
-}
+#saveButton {}
 
 #shareBtn {
     width: 8%;
-    /* align-self: right; */
-    /* margin-left: 2rem; */
 }
 
 #toggleDirectionBtn {
     width: 5%;
-    /* margin-left: 1rem; */
-    
 }
-
-
-
 
 button:hover {
     background-color: #000000;
@@ -137,19 +119,20 @@ button:hover {
 
 #linkList {
     display: flex;
-    flex-wrap: wrap; 
-    justify-content: center; 
+    flex-wrap: wrap;
+    justify-content: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10%;
-    width: 50%; 
+    width: 50%;
     gap: 2rem;
-    /* background-color: #1eff00; */
+    padding-bottom: 100px; /* Additional bottom padding */
+    position: relative; /* For correct positioning */
+    margin-top: calc(10% + 80px); /* Adding margin-top to ensure it clears buttonMenu */
 }
 
+
 .linkItem {
-    flex: 1 1 calc(25% - 2rem); 
-    /* margin-bottom: 40px; */
+    flex: 1 1 calc(25% - 2rem);
     background-color: #00000024;
     padding: 2rem;
     border-color: #0dff00;
@@ -164,13 +147,13 @@ button:hover {
 
 @media (max-width: 1200px) {
     .linkItem {
-        flex: 1 1 calc(33.33% - 2rem); /* Адаптация под экраны меньшего размера */
+        flex: 1 1 calc(33.33% - 2rem);
     }
 }
 
 @media (max-width: 900px) {
     .linkItem {
-        flex: 1 1 calc(50% - 2rem); /* Адаптация под экраны еще меньшего размера */
+        flex: 1 1 calc(50% - 2rem);
     }
 }
 
@@ -180,7 +163,7 @@ button:hover {
         gap: 1rem;
     }
     .linkItem {
-        flex: 1 1 calc(100% - 2rem); /* Адаптация под мобильные устройства */
+        flex: 1 1 calc(100% - 2rem);
         padding: 1rem;
         margin-bottom: 20px;
     }
@@ -203,13 +186,12 @@ button:hover {
     height: auto;
     margin-bottom: 15px;
     border-radius: 25px;
-    position: relative;
 }
 
 .linkItem a {
     color: #3cff00;
     text-decoration: none;
-    font-size: 1.5rem; /* Уменьшите размер шрифта для мобильных устройств */
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -248,7 +230,6 @@ button:hover {
     color: rgb(255, 255, 255);
 }
 
-/* Custom scrollbar for WebKit browsers */
 ::-webkit-scrollbar {
     width: 3px;
 }
@@ -263,13 +244,11 @@ button:hover {
     border-radius: 1px;
 }
 
-/* Custom scrollbar for Firefox */
 * {
     scrollbar-width: thin;
     scrollbar-color: #00ff3c8c #000000;
 }
 
-/* Custom scrollbar for Internet Explorer and Edge */
 ::-ms-scrollbar {
     width: 3px;
 }
@@ -283,46 +262,32 @@ button:hover {
     border-radius: 10px;
 }
 
-
 @media (max-width: 600px) {
-
     .body {
-       
         height: auto;
         padding: 2rem;
     }
-
-
     .saveLinks {
         width: 100%;
-        
     }
-
     .container {
-        /* width: 90%; */
-        margin-top: 320px; /* Уменьшите отступ сверху для мобильных устройств */
+        margin-top: 320px;
     }
-
     form {
-        width: 90%; /* Увеличьте ширину формы для мобильных устройств */
-        padding: 1rem; /* Уменьшите padding формы для мобильных устройств */
+        width: 90%;
+        padding: 1rem;
     }
-
     .linkItem {
-        padding: 1rem; /* Уменьшите padding элементов для мобильных устройств */
+        padding: 1rem;
         width: 100%;
     }
-
     .linkItem a {
-        font-size: 1.2rem; /* Уменьшите размер шрифта для мобильных устройств */
+        font-size: 1.2rem;
     }
-
     #linkList {
-        padding-top: 100px; /* Уменьшите верхний отступ для мобильных устройств */
-            margin-left: 0%;
-            width:100%;
-            padding-top: 75%; /* Добавьте верхний отступ */
-            
-        }
-    
+        padding-top: 100px;
+        margin-left: 0%;
+        width: 100%;
+        padding-top: 75%;
+    }
 }

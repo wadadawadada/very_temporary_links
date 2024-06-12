@@ -24,7 +24,7 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             const linkList = document.getElementById('linkList');
             linkList.appendChild(linkItem);
 
-            // Прокрутка страницы к новому элементу
+            // Прокрутка страницы к новому элементу с учетом отступа
             linkItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             document.getElementById('linkUrl').value = '';
