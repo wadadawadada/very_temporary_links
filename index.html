@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <form id="linkForm">
+        <input type="url" id="linkUrl" placeholder="Enter URL" required>
+        <div class="buttonMenu" id="buttonMenu">
+        <button type="saveButton">Save</button>
+        <button id="shareBtn">SHARE</button>
+        <button id="toggleDirectionBtn">E/Ш</button>
+        </div>
+    </form>
     <div class="container">
         <div class="saveLinksTitle">🔗 Very Temporary Links</div>
-        <form id="linkForm">
-            <input type="url" id="linkUrl" placeholder="Enter URL" required>
-            <div class="buttonMenu" id="buttonMenu">
-            <button type="saveButton">Save</button>
-            <button id="shareBtn">SHARE</button>
-            <button id="toggleDirectionBtn">E/Ш</button>
-            </div>
-        </form>
         <div id="linkList"></div>
     </div>
     
