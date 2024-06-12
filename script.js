@@ -38,12 +38,37 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
 document.getElementById('shareBtn').addEventListener('click', function() {
     const links = JSON.parse(localStorage.getItem('links')) || [];
     const linksParam = encodeURIComponent(JSON.stringify(links));
-    const shareUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
-    navigator.clipboard.writeText(shareUrl).then(() => {
-        alert('Shareable link copied to clipboard!');
-    }).catch(err => {
-        console.error('Error copying to clipboard: ', err);
-        alert('Failed to copy link to clipboard');
+    const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
+
+    // Use TinyURL API to shorten the URL
+    fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            url: longUrl,
+            domain: "tinyurl.com"
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.data) {
+            const shortUrl = data.data.tiny_url;
+            navigator.clipboard.writeText(shortUrl).then(() => {
+                alert('Shareable link copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying to clipboard: ', err);
+                alert('Failed to copy link to clipboard');
+            });
+        } else {
+            console.error('Error shortening URL: ', data);
+            alert('Failed to shorten the URL');
+        }
+    })
+    .catch(err => {
+        console.error('Error shortening URL: ', err);
+        alert('Failed to shorten the URL');
     });
 });
 
