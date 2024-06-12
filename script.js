@@ -37,8 +37,8 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
 
 document.getElementById('shareBtn').addEventListener('click', function() {
     const links = JSON.parse(localStorage.getItem('links')) || [];
-    const uniquePath = generateUniquePath();
     const linksParam = encodeURIComponent(JSON.stringify(links));
+    const uniquePath = generateUniquePath();
     const shareUrl = `https://verytemporary.netlify.app/${uniquePath}?links=${linksParam}`;
     navigator.clipboard.writeText(shareUrl).then(() => {
         alert('Shareable link copied to clipboard!');
