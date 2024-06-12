@@ -110,8 +110,9 @@ button {
 }
 
 #shareBtn:hover {
-    background-color: #00fc11;
-    color: #000000;
+    background-color: #004cfc;
+    color: #ffffff;
+    border-color: #004cfc;
 }
 
 #toggleDirectionBtn {
@@ -122,7 +123,7 @@ button {
 
 #toggleDirectionBtn:hover {
     background-color: #ff07ee;
-    
+    border-color: #004cfc;
 }
 
 button:hover {
