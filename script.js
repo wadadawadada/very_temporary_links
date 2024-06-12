@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    loadLinksFromUrl();
     loadLinks();
 });
 
@@ -33,6 +34,23 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             alert('Could not fetch data');
         });
 });
+
+document.getElementById('shareBtn').addEventListener('click', function() {
+    const links = JSON.parse(localStorage.getItem('links')) || [];
+    const uniquePath = generateUniquePath();
+    const linksParam = encodeURIComponent(JSON.stringify(links));
+    const shareUrl = `https://verytemporary.netlify.app/${uniquePath}?links=${linksParam}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('Shareable link copied to clipboard!');
+    }).catch(err => {
+        console.error('Error copying to clipboard: ', err);
+        alert('Failed to copy link to clipboard');
+    });
+});
+
+function generateUniquePath() {
+    return 'generatedlink/' + Math.random().toString(36).substr(2, 9);
+}
 
 function createLinkItem(title, description, url, imageUrl) {
     let linkItem = document.createElement('div');
@@ -81,6 +99,15 @@ function loadLinks() {
         let linkItem = createLinkItem(link.title, link.description, link.url, link.image);
         linkList.appendChild(linkItem);
     });
+}
+
+function loadLinksFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const linksParam = urlParams.get('links');
+    if (linksParam) {
+        const links = JSON.parse(decodeURIComponent(linksParam));
+        localStorage.setItem('links', JSON.stringify(links));
+    }
 }
 
 function removeLink(url) {
