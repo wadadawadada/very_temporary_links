@@ -15,12 +15,13 @@ body {
 .saveLinks {
     position: flex;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 3rem;
     background-image: linear-gradient(to right, #2600ff, #007bff, #1eff00, #f0b3b3, #ede1e1);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     animation: animateColor 4s linear infinite alternate-reverse;
+    text-align: center;
 }
 
 @keyframes animateColor {
@@ -52,6 +53,7 @@ body {
     margin-top: 50px;
     justify-content: center;
     position: flex;
+    
 }
 
 h1 {
@@ -82,6 +84,7 @@ input[type="url"] {
     border-radius: 25px;
     background-color: #000000;
     color: #0dff00;
+    margin-top: 2rem;
 }
 
 button {
@@ -92,10 +95,26 @@ button {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     border-radius: 25px;
-    width: 100%;
+    width: 85%;
     border-color: #0dff00;
     border-width: 1px;
     border-style: solid;
+}
+
+#buttonMenu {
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+#saveButton {
+    /* width: 85%; */
+}
+
+#shareBtn {
+    width: 8%;
+    align-self: right;
+    margin-left: 2rem;
 }
 
 button:hover {

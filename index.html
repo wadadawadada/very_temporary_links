@@ -8,12 +8,14 @@
 </head>
 <body>
     <div class="container">
-        <div class="saveLinks"><h1>🔗 Very Temporary Links</h1></div>
+        <div class="saveLinks">🔗 Very Temporary Links</div>
         <form id="linkForm">
             <input type="url" id="linkUrl" placeholder="Enter URL" required>
-            <button type="submit">Save</button>
+            <div class="buttonMenu">
+            <button type="saveButton">Save</button>
+            <button id="shareBtn">SHARE</button>
+            </div>
         </form>
-        <button id="shareBtn">SHARE</button>
         <div id="linkList"></div>
     </div>
     <script src="script.js"></script>
