@@ -12,7 +12,7 @@ body {
     
 }
 
-.saveLinks {
+.saveLinksTitle {
     position: flex;
     justify-content: center;
     font-size: 3rem;
@@ -50,7 +50,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     width: 90%;
-    margin-top: 50px;
+    margin-top: 80px;
     justify-content: center;
     position: flex;
     
@@ -113,9 +113,18 @@ button {
 
 #shareBtn {
     width: 8%;
-    align-self: right;
-    margin-left: 2rem;
+    /* align-self: right; */
+    /* margin-left: 2rem; */
 }
+
+#toggleDirectionBtn {
+    width: 5%;
+    /* margin-left: 1rem; */
+    
+}
+
+
+
 
 button:hover {
     background-color: #000000;
@@ -128,22 +137,21 @@ button:hover {
 
 #linkList {
     display: flex;
-    margin-left: 25%;
-    flex-direction: column;
-    width: 50%;
-    margin-top: 10%; /* Добавьте верхний отступ */
-    min-width: 500px;
-    max-height: 300px;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 50%; 
+    gap: 2rem;
     /* background-color: #1eff00; */
 }
 
 .linkItem {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 40px; /* Уменьшите отступ для мобильных устройств */
-    position: relative;
+    flex: 1 1 calc(25% - 2rem); 
+    /* margin-bottom: 40px; */
     background-color: #00000024;
-    padding: 2rem; /* Уменьшите padding для мобильных устройств */
+    padding: 2rem;
     border-color: #0dff00;
     border-width: 1px;
     border-style: solid;
@@ -152,8 +160,30 @@ button:hover {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 1s forwards;
-    
-    
+}
+
+@media (max-width: 1200px) {
+    .linkItem {
+        flex: 1 1 calc(33.33% - 2rem); /* Адаптация под экраны меньшего размера */
+    }
+}
+
+@media (max-width: 900px) {
+    .linkItem {
+        flex: 1 1 calc(50% - 2rem); /* Адаптация под экраны еще меньшего размера */
+    }
+}
+
+@media (max-width: 600px) {
+    #linkList {
+        margin-top: 20%;
+        gap: 1rem;
+    }
+    .linkItem {
+        flex: 1 1 calc(100% - 2rem); /* Адаптация под мобильные устройства */
+        padding: 1rem;
+        margin-bottom: 20px;
+    }
 }
 
 @keyframes fadeIn {

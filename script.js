@@ -47,6 +47,15 @@ document.getElementById('shareBtn').addEventListener('click', function() {
     });
 });
 
+document.getElementById('toggleDirectionBtn').addEventListener('click', function() {
+    const linkList = document.getElementById('linkList');
+    if (linkList.style.flexDirection === 'row') {
+        linkList.style.flexDirection = 'column';
+    } else {
+        linkList.style.flexDirection = 'row';
+    }
+});
+
 function createLinkItem(title, description, url, imageUrl) {
     let linkItem = document.createElement('div');
     linkItem.className = 'linkItem';
