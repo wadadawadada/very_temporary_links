@@ -38,8 +38,7 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
 document.getElementById('shareBtn').addEventListener('click', function() {
     const links = JSON.parse(localStorage.getItem('links')) || [];
     const linksParam = encodeURIComponent(JSON.stringify(links));
-    const uniquePath = generateUniquePath();
-    const shareUrl = `https://verytemporary.netlify.app/${uniquePath}?links=${linksParam}`;
+    const shareUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
     navigator.clipboard.writeText(shareUrl).then(() => {
         alert('Shareable link copied to clipboard!');
     }).catch(err => {
@@ -47,10 +46,6 @@ document.getElementById('shareBtn').addEventListener('click', function() {
         alert('Failed to copy link to clipboard');
     });
 });
-
-function generateUniquePath() {
-    return 'generatedlink/' + Math.random().toString(36).substr(2, 9);
-}
 
 function createLinkItem(title, description, url, imageUrl) {
     let linkItem = document.createElement('div');
@@ -95,6 +90,7 @@ function saveLink(link) {
 function loadLinks() {
     let links = JSON.parse(localStorage.getItem('links')) || [];
     const linkList = document.getElementById('linkList');
+    linkList.innerHTML = ''; // Clear existing links
     links.forEach(link => {
         let linkItem = createLinkItem(link.title, link.description, link.url, link.image);
         linkList.appendChild(linkItem);
@@ -115,4 +111,5 @@ function removeLink(url) {
     let links = JSON.parse(localStorage.getItem('links')) || [];
     links = links.filter(link => link.url !== url);
     localStorage.setItem('links', JSON.stringify(links));
+    loadLinks();
 }
