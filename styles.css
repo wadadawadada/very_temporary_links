@@ -4,7 +4,7 @@ body {
     background: #000000;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Изменено с center на flex-start */
+    align-items: flex-start; 
     min-height: 100vh;
     margin: 0;
     flex-direction: column;
@@ -31,7 +31,7 @@ body {
     flex-direction: row;
 }
 
-/* Add these styles for the tooltip */
+
 .infoInfo {
     position: relative;
     display: inline-block;
@@ -41,8 +41,8 @@ body {
 }
 
 .tooltip {
-    display: none; /* Hidden by default */
-    position: fixed; /* Fixed position to center on the page */
+    display: none; 
+    position: fixed; 
     width: 50%;
     height: 80%;
     top: 50%;
@@ -53,20 +53,20 @@ body {
     text-align: center;
     padding: 10px;
     border-radius: 8px;
-    z-index: 1001; /* Ensure it appears above other elements */
-    overflow: auto; /* Enable scrolling if content is too large */
-    opacity: 0; /* Initially invisible */
-    transition: opacity 0.5s ease; /* Smooth transition for visibility */
+    z-index: 1001;
+    overflow: auto; 
+    opacity: 0;
+    transition: opacity 0.5s ease; 
     box-shadow: 0 0 40px 80px #000000f1;
     text-align: left;
 }
 
 .infoInfo:hover .tooltip {
-    display: block; /* Show tooltip on hover */
-    opacity: 1; /* Make it visible */
+    display: block; 
+    opacity: 1;
 }
 
-/* Optional: Additional styles for tooltip content */
+
 .tooltip p {
     margin: 0;
 }
@@ -98,7 +98,7 @@ body {
     width: 100%;
     justify-content: center;
     position: relative;
-    margin-top: 15rem; /* Добавлено для отступа от верхнего меню */
+    margin-top: 15rem; 
 }
 
 h1 {
@@ -118,7 +118,7 @@ form {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 0; /* Изменено с 7% на 0 */
+    top: 0; 
     left: 50%;
     transform: translateX(-50%);
     background-color: #000000;
