@@ -105,11 +105,23 @@ button {
 #shareBtn {
     width: 8%;
     height: 8%;
+    background-color: #000000;
+    color: #00fc11;
+}
+
+#shareBtn:hover {
+    background-color: #00fc11;
+    color: #000000;
 }
 
 #toggleDirectionBtn {
     width: 5%;
     height: 5%;
+    background-color: #000000;
+}
+
+#toggleDirectionBtn:hover {
+    background-color: #ff07ee;
     
 }
 
