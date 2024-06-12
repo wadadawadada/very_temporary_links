@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
+
+    // Add event listeners for the info icon to show/hide the tooltip smoothly
+    const infoIcon = document.querySelector('.infoInfo');
+    const tooltip = infoIcon.querySelector('.tooltip');
+
+    infoIcon.addEventListener('mouseenter', () => {
+        tooltip.style.display = 'block';
+        setTimeout(() => {
+            tooltip.style.opacity = '1';
+        }, 10); // Small delay to ensure display is set before opacity
+    });
+
+    infoIcon.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
+        setTimeout(() => {
+            tooltip.style.display = 'none';
+        }, 500); // Duration should match the CSS transition duration
+    });
 });
 
 document.getElementById('linkForm').addEventListener('submit', function(e) {

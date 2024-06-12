@@ -31,11 +31,46 @@ body {
     flex-direction: row;
 }
 
+/* Add these styles for the tooltip */
 .infoInfo {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 1rem;
     font-size: 1.5rem;
-    margin-left: 1rem; /* добавляет отступ между элементами */
-    text-align: center;
 }
+
+.tooltip {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position to center on the page */
+    width: 50%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 1001; /* Ensure it appears above other elements */
+    overflow: auto; /* Enable scrolling if content is too large */
+    opacity: 0; /* Initially invisible */
+    transition: opacity 0.5s ease; /* Smooth transition for visibility */
+    box-shadow: 0 0 20px 20px #000000;
+    text-align: left;
+}
+
+.infoInfo:hover .tooltip {
+    display: block; /* Show tooltip on hover */
+    opacity: 1; /* Make it visible */
+}
+
+/* Optional: Additional styles for tooltip content */
+.tooltip p {
+    margin: 0;
+}
+
 
 
 
