@@ -11,8 +11,15 @@ body {
     overflow-x: hidden;
 }
 
-.saveLinksTitle {
+
+.titleContainer {
+    display: flex;
+    align-items: center;
     justify-content: center;
+    margin-bottom: 4rem;
+}
+
+.saveLinksTitle {
     font-size: 3rem;
     background-image: linear-gradient(to right, #2600ff, #007bff, #1eff00, #f0b3b3, #ede1e1);
     -webkit-background-clip: text;
@@ -20,9 +27,18 @@ body {
     color: transparent;
     animation: animateColor 4s linear infinite alternate-reverse;
     text-align: center;
-    margin-bottom: 4rem;
-    /* margin-top: 50%; */
+    
+    flex-direction: row;
 }
+
+.infoInfo {
+    font-size: 1.5rem;
+    margin-left: 1rem; /* добавляет отступ между элементами */
+    text-align: center;
+}
+
+
+
 
 @keyframes animateColor {
     0% {
