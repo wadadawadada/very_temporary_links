@@ -107,6 +107,7 @@ function loadLinksFromUrl() {
     if (linksParam) {
         const links = JSON.parse(decodeURIComponent(linksParam));
         localStorage.setItem('links', JSON.stringify(links));
+        loadLinks();
     }
 }
 
