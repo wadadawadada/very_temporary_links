@@ -27,7 +27,6 @@ body {
     color: transparent;
     animation: animateColor 4s linear infinite alternate-reverse;
     text-align: center;
-    
     flex-direction: row;
 }
 
@@ -368,7 +367,9 @@ button:hover {
         width: 10%;
     }
     
-
+    .titleContainer {
+        margin-top: 10rem;
+    }
     
     .infoInfo {
         visibility: hidden;
