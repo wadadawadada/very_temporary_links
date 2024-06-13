@@ -267,7 +267,7 @@ button:hover {
     color: #3cff00;
     text-decoration: none;
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .linkItem a:hover {
@@ -275,7 +275,8 @@ button:hover {
 }
 
 .linkItem p {
-    margin: 0;
+    margin-top: 1.5rem;
+    line-height: 1.5rem;
 }
 
 .delete-btn {
