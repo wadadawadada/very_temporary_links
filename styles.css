@@ -352,8 +352,8 @@ button:hover {
     }
 
     #buttonMenu {
-   width: 90%;
-   gap: 1rem;
+        width: 90%;
+        gap: 1rem;
     }
     
     #saveButton {
@@ -377,11 +377,12 @@ button:hover {
     .tooltip {
         visibility: hidden;
     }
-    
+
         
     .container {
         margin-top: 0px;
         padding: 2rem;
+        overflow-x: hidden;
     }
     
     form {
@@ -396,9 +397,8 @@ button:hover {
         font-size: 1.2rem;
     }
     #linkList {
-        padding-top: 100px;
         margin-left: 0%;
         width: 100%;
-        padding-top: 75%;
+
     }
 }
