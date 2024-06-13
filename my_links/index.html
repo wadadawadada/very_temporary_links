@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Links</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>My Saved Links</h1>
+        <div id="myLinksList"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMyLinks();
+
+            function loadMyLinks() {
+                let links = JSON.parse(localStorage.getItem('links')) || [];
+                const myLinksList = document.getElementById('myLinksList');
+                myLinksList.innerHTML = ''; // Clear existing links
+                links.forEach(link => {
+                    let linkItem = createLinkItem(link.title, link.description, link.url, link.image);
+                    myLinksList.appendChild(linkItem);
+                });
+            }
+
+            function createLinkItem(title, description, url, imageUrl) {
+                let linkItem = document.createElement('div');
+                linkItem.className = 'linkItem';
+
+                if (imageUrl) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    linkItem.appendChild(img);
+                }
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                link.textContent = title;
+                linkItem.appendChild(link);
+
+                if (description) {
+                    const desc = document.createElement('p');
+                    desc.textContent = description;
+                    linkItem.appendChild(desc);
+                }
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'X';
+                deleteBtn.addEventListener('click', function() {
+                    removeLink(url);
+                    linkItem.remove();
+                    loadMyLinks();
+                });
+                linkItem.appendChild(deleteBtn);
+
+                return linkItem;
+            }
+
+            function removeLink(url) {
+                let links = JSON.parse(localStorage.getItem('links')) || [];
+                links = links.filter(link => link.url !== url);
+                localStorage.setItem('links', JSON.stringify(links));
+            }
+        });
+    </script>
+</body>
+</html>

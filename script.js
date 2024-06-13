@@ -19,6 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
             tooltip.style.display = 'none';
         }, 500); // Duration should match the CSS transition duration
     });
+
+    const provider = new WalletConnectProvider.default({
+        infuraId: "YOUR_INFURA_PROJECT_ID", // Required
+    });
+
+    document.getElementById('connectWalletBtn').addEventListener('click', async () => {
+        try {
+            // Enable session (triggers QR Code modal)
+            await provider.enable();
+            const web3 = new Web3(provider);
+
+            const accounts = await web3.eth.getAccounts();
+            console.log('Connected accounts:', accounts);
+
+            // Do something with the connected account
+        } catch (error) {
+            console.error('Failed to connect wallet:', error);
+        }
+    });
+
+    document.getElementById('myLinksBtn').addEventListener('click', () => {
+        window.location.href = '/my_links/';
+    });
 });
 
 document.getElementById('linkForm').addEventListener('submit', function(e) {
