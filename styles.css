@@ -351,8 +351,9 @@ button:hover {
     }
 
     #buttonMenu {
-        width: 90%;
+        width: 100%;
         gap: 1rem;
+        justify-content:space-around;
     }
     
     #saveButton {
