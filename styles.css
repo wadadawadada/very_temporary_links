@@ -406,6 +406,10 @@ button:hover {
         width: 10%;
         
     }
+
+    #myLinksBtn, #connectWalletBtn {
+        visibility: hidden;
+    }
     
     .titleContainer {
         margin-top: 10rem;
