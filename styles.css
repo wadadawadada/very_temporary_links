@@ -297,9 +297,9 @@ button:hover {
     margin-bottom: 1.5rem;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; /* Ограничивает количество строк до 4 */
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis; /* Добавляет многоточие для переполненного текста */
+    text-overflow: ellipsis; 
 }
 
 .linkItem a:hover {
@@ -311,9 +311,9 @@ button:hover {
     line-height: 1.5rem;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3; /* Ограничивает количество строк до 4 */
+    -webkit-line-clamp: 3; 
     overflow: hidden;
-    text-overflow: ellipsis; /* Добавляет многоточие для переполненного текста */
+    text-overflow: ellipsis;
 }
 
 
@@ -347,7 +347,7 @@ button:hover {
 .number-container {
     position: absolute;
     bottom: 0px;
-    right: 50%;
+    right: 20px;
     width: min-content;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -376,8 +376,15 @@ button:hover {
     background-color: #0000ff;
     border-color: #0000ff;
     color: #ffffff;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease-in-out;
 }
+
+/* .number-container:hover {
+    background-color: #121276;
+    border-color: #0000ff;
+    color: #ffffff;
+    transition: all 0.3s ease-in-out;
+} */
 
 
 
