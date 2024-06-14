@@ -153,6 +153,15 @@ function createLinkItem(title, description, url, imageUrl) {
     });
     linkItem.appendChild(deleteBtn);
 
+    // Add number container
+    const numberContainer = document.createElement('div');
+    numberContainer.className = 'number-container';
+    numberContainer.textContent = document.querySelectorAll('.linkItem').length + 1;
+    numberContainer.addEventListener('click', function() {
+        numberContainer.classList.toggle('active');
+    });
+    linkItem.appendChild(numberContainer);
+
     return linkItem;
 }
 
