@@ -101,19 +101,19 @@ button:hover {
 
 @keyframes solidColorTransition {
     0% {
-        background-color: #00aaf3;
+        background-color: #f30000;
     }
     25% {
-        background-color: #52099f;
+        background-color: #ffc400;
     }
     50% {
-        background-color: #05d405;
+        background-color: #d45405;
     }
     75% {
-        background-color: #004cfc;
+        background-color: #d303a3;
     }
     100% {
-        background-color: #9804f3;
+        background-color: #004cfc;
     }
 }
 
@@ -130,7 +130,7 @@ button:hover {
     transition: background-color 0.5s ease, opacity 0.5s ease;
     transition: all 0.3s ease-in-out;
     scale: 1.1;
-    box-shadow: 0 0 15px 5px #00fc11;
+    box-shadow: 0 0 7px 5px #00fc11;
 }
 
 #shareBtn.copied::after {
@@ -140,9 +140,6 @@ button:hover {
     transition: all 0.3s ease-in-out;
     scale: 1.1;
 }
-
-
-
 
 
 #shareBtn:hover {
