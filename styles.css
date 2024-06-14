@@ -83,19 +83,66 @@ button:hover {
 
 #shareBtn {
     width: 8%;
-    max-height: 5%;
+    max-height: 8%;
     background-color: #000000;
-    color: #00fc11;
+    color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0.1rem;
-}
-
-#copyIcon {
-
     
 }
+
+#shareBtn.animated {
+    animation: greenGradient 2s forwards;
+    background-size: 200% 200%;
+    border-color: #00d2fc;
+}
+
+@keyframes greenGradient {
+    0% {
+        background: linear-gradient(0deg, #00aaf3, #52099f, #099f89, #004cfc);
+        background-size: 200% 400%;
+        background-position: 100% 0;
+    }
+    50% {
+        background: linear-gradient(180deg, #004cfc, #52099f, #099f89, #004cfc);
+        background-size: 200% 400%;
+        background-position: 0 100%;
+    }
+    100% {
+        background: linear-gradient(0deg, #00aaf3, #52099f, #099f89, #004cfc);
+        background-size: 200% 400%;
+        background-position: 100% 0;
+    }
+}
+
+
+
+#shareBtn {
+    transition: background-color 0.5s ease, opacity 0.5s ease;
+    transition: all 0.3s ease-in-out;
+}
+
+#shareBtn.copied {
+    background-color: #00e600;
+    color: #000000;
+    transition: background-color 0.5s ease, opacity 0.5s ease;
+    transition: all 0.3s ease-in-out;
+    scale: 1.1;
+    box-shadow: 0 0 15px 5px #00fc11;
+}
+
+#shareBtn.copied::after {
+    content: '';
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    transition: all 0.3s ease-in-out;
+    scale: 1.1;
+}
+
+
+
 
 
 #shareBtn:hover {

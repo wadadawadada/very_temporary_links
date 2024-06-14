@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
 
-    // Add event listeners for the info icon to show/hide the tooltip smoothly
     const infoIcon = document.querySelector('.infoInfo');
     const tooltip = infoIcon.querySelector('.tooltip');
 
@@ -10,30 +9,27 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltip.style.display = 'block';
         setTimeout(() => {
             tooltip.style.opacity = '1';
-        }, 10); // Small delay to ensure display is set before opacity
+        }, 10);
     });
 
     infoIcon.addEventListener('mouseleave', () => {
         tooltip.style.opacity = '0';
         setTimeout(() => {
             tooltip.style.display = 'none';
-        }, 500); // Duration should match the CSS transition duration
+        }, 500);
     });
 
     const provider = new WalletConnectProvider.default({
-        infuraId: "YOUR_INFURA_PROJECT_ID", // Required
+        infuraId: "YOUR_INFURA_PROJECT_ID",
     });
 
     document.getElementById('connectWalletBtn').addEventListener('click', async () => {
         try {
-            // Enable session (triggers QR Code modal)
             await provider.enable();
             const web3 = new Web3(provider);
 
             const accounts = await web3.eth.getAccounts();
             console.log('Connected accounts:', accounts);
-
-            // Do something with the connected account
         } catch (error) {
             console.error('Failed to connect wallet:', error);
         }
@@ -65,7 +61,6 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             const linkList = document.getElementById('linkList');
             linkList.appendChild(linkItem);
 
-            // Прокрутка страницы к новому элементу с учетом отступа
             linkItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             document.getElementById('linkUrl').value = '';
@@ -77,39 +72,54 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
 });
 
 document.getElementById('shareBtn').addEventListener('click', function() {
-    const links = JSON.parse(localStorage.getItem('links')) || [];
-    const linksParam = encodeURIComponent(JSON.stringify(links));
-    const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
+    const shareBtn = this;
+    const originalContent = shareBtn.innerHTML; // Store the original content of the button
 
-    // Use TinyURL API to shorten the URL
-    fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            url: longUrl,
-            domain: "tinyurl.com"
+    shareBtn.classList.add('animated');
+
+    shareBtn.addEventListener('animationend', function handler() {
+        shareBtn.removeEventListener('animationend', handler);
+        const links = JSON.parse(localStorage.getItem('links')) || [];
+        const linksParam = encodeURIComponent(JSON.stringify(links));
+        const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
+
+        fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url: longUrl,
+                domain: "tinyurl.com"
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.data) {
-            const shortUrl = data.data.tiny_url;
-            navigator.clipboard.writeText(shortUrl).then(() => {
-                alert('Shareable link copied to clipboard!');
-            }).catch(err => {
-                console.error('Error copying to clipboard: ', err);
-                alert('Failed to copy link to clipboard');
-            });
-        } else {
-            console.error('Error shortening URL: ', data);
-            alert('Failed to shorten the URL');
-        }
-    })
-    .catch(err => {
-        console.error('Error shortening URL: ', err);
-        alert('Failed to shorten the URL');
+        .then(response => response.json())
+        .then(data => {
+            if (data.data) {
+                const shortUrl = data.data.tiny_url;
+                navigator.clipboard.writeText(shortUrl).then(() => {
+                    shareBtn.classList.remove('animated');
+                    shareBtn.classList.add('copied');
+                    shareBtn.innerHTML = 'Copied!';
+                    
+                    setTimeout(() => {
+                        shareBtn.classList.remove('copied');
+                        shareBtn.innerHTML = originalContent;
+                        shareBtn.style.backgroundColor = ''; // Reset background color
+                    }, 1000); // Reset after 3 seconds
+                }).catch(err => {
+                    console.error('Error copying to clipboard: ', err);
+                    shareBtn.classList.remove('animated');
+                });
+            } else {
+                console.error('Error shortening URL: ', data);
+                shareBtn.classList.remove('animated');
+            }
+        })
+        .catch(err => {
+            console.error('Error shortening URL: ', err);
+            shareBtn.classList.remove('animated');
+        });
     });
 });
 
@@ -153,7 +163,6 @@ function createLinkItem(title, description, url, imageUrl, isActive = false) {
     });
     linkItem.appendChild(deleteBtn);
 
-    // Add number container
     const numberContainer = document.createElement('div');
     numberContainer.className = 'number-container';
     numberContainer.textContent = document.querySelectorAll('.linkItem').length + 1;
@@ -189,7 +198,7 @@ function saveLink(link) {
 function loadLinks() {
     let links = JSON.parse(localStorage.getItem('links')) || [];
     const linkList = document.getElementById('linkList');
-    linkList.innerHTML = ''; // Clear existing links
+    linkList.innerHTML = '';
     links.forEach(link => {
         let linkItem = createLinkItem(link.title, link.description, link.url, link.image, link.isActive);
         linkList.appendChild(linkItem);
