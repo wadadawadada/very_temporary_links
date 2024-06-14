@@ -122,7 +122,7 @@ document.getElementById('toggleDirectionBtn').addEventListener('click', function
     }
 });
 
-function createLinkItem(title, description, url, imageUrl) {
+function createLinkItem(title, description, url, imageUrl, isActive = false) {
     let linkItem = document.createElement('div');
     linkItem.className = 'linkItem';
 
@@ -157,17 +157,32 @@ function createLinkItem(title, description, url, imageUrl) {
     const numberContainer = document.createElement('div');
     numberContainer.className = 'number-container';
     numberContainer.textContent = document.querySelectorAll('.linkItem').length + 1;
+    if (isActive) {
+        numberContainer.classList.add('active');
+    }
     numberContainer.addEventListener('click', function() {
         numberContainer.classList.toggle('active');
+        updateLinkActiveState(url, numberContainer.classList.contains('active'));
     });
     linkItem.appendChild(numberContainer);
 
     return linkItem;
 }
 
+function updateLinkActiveState(url, isActive) {
+    let links = JSON.parse(localStorage.getItem('links')) || [];
+    links = links.map(link => {
+        if (link.url === url) {
+            return { ...link, isActive };
+        }
+        return link;
+    });
+    localStorage.setItem('links', JSON.stringify(links));
+}
+
 function saveLink(link) {
     let links = JSON.parse(localStorage.getItem('links')) || [];
-    links.push(link);
+    links.push({ ...link, isActive: false });
     localStorage.setItem('links', JSON.stringify(links));
 }
 
@@ -176,7 +191,7 @@ function loadLinks() {
     const linkList = document.getElementById('linkList');
     linkList.innerHTML = ''; // Clear existing links
     links.forEach(link => {
-        let linkItem = createLinkItem(link.title, link.description, link.url, link.image);
+        let linkItem = createLinkItem(link.title, link.description, link.url, link.image, link.isActive);
         linkList.appendChild(linkItem);
     });
 }
