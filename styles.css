@@ -567,6 +567,10 @@ button:hover {
         padding: 2rem;
     }
 
+    button {
+        width: 95%;
+    }
+
     #buttonMenu {
         width: 100%;
         gap: 1rem;
@@ -583,8 +587,8 @@ button:hover {
     }
         
     #toggleDirectionBtn {
-        width: 10%;
-        
+        visibility: hidden;
+        display: none;
     }
 
 
@@ -595,6 +599,7 @@ button:hover {
 
     #connectWalletBtn {
         visibility: hidden;
+        display: none;
     }
     
     .titleContainer {
