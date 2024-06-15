@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
 
+    const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+
     const infoIcon = document.querySelector('.infoInfo');
     const tooltip = infoIcon.querySelector('.tooltip');
 
@@ -36,8 +38,129 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('myLinksBtn').addEventListener('click', () => {
-        window.location.href = '/my_links/';
+        console.log('myLinksBtn clicked');
+        const currentLinks = JSON.parse(localStorage.getItem('links')) || [];
+        if (currentLinks.length === 0) {
+            alert('No links to save.');
+            return;
+        }
+
+        const pageCount = savedPages.length + 1;
+
+        const savedPage = {
+            id: pageCount,
+            links: currentLinks
+        };
+
+        console.log('Saving page:', savedPage);
+
+        savedPages.push(savedPage);
+        localStorage.setItem('savedPages', JSON.stringify(savedPages));
+
+        createSavedPageElement(savedPage.id);
+
+        localStorage.removeItem('links');
+        loadLinks();
     });
+
+    document.getElementById('shareBtn').addEventListener('click', function() {
+        const shareBtn = this;
+        const originalContent = shareBtn.innerHTML; // Store the original content of the button
+
+        shareBtn.classList.add('animated');
+
+        shareBtn.addEventListener('animationend', function handler() {
+            shareBtn.removeEventListener('animationend', handler);
+            const currentLinks = JSON.parse(localStorage.getItem('links')) || [];
+            const linksParam = encodeURIComponent(JSON.stringify(currentLinks));
+            const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
+
+            fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    url: longUrl,
+                    domain: "tinyurl.com"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.data) {
+                    const shortUrl = data.data.tiny_url;
+                    navigator.clipboard.writeText(shortUrl).then(() => {
+                        shareBtn.classList.remove('animated');
+                        shareBtn.classList.add('copied');
+                        shareBtn.innerHTML = 'Copied!';
+
+                        setTimeout(() => {
+                            shareBtn.classList.remove('copied');
+                            shareBtn.innerHTML = originalContent;
+                            shareBtn.style.backgroundColor = ''; // Reset background color
+                        }, 1000); // Reset after 3 seconds
+                    }).catch(err => {
+                        console.error('Error copying to clipboard: ', err);
+                        shareBtn.classList.remove('animated');
+                    });
+                } else {
+                    console.error('Error shortening URL: ', data);
+                    shareBtn.classList.remove('animated');
+                }
+            })
+            .catch(err => {
+                console.error('Error shortening URL: ', err);
+                shareBtn.classList.remove('animated');
+            });
+        });
+    });
+
+    function createSavedPageElement(id) {
+        const savedPageElement = document.createElement('div');
+        savedPageElement.className = 'savedPage';
+        savedPageElement.setAttribute('data-id', id);
+        savedPageElement.textContent = id;
+
+        const deleteTabBtn = document.createElement('button');
+        deleteTabBtn.className = 'delete-tab-btn';
+        deleteTabBtn.textContent = 'X';
+        deleteTabBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            deleteSavedPage(id);
+        });
+        savedPageElement.appendChild(deleteTabBtn);
+
+        savedPageElement.addEventListener('click', () => {
+            document.querySelectorAll('.savedPage').forEach(page => page.classList.remove('active'));
+            savedPageElement.classList.add('active');
+
+            const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+            const page = savedPages.find(page => page.id === id);
+            if (page) {
+                localStorage.setItem('links', JSON.stringify(page.links));
+                loadLinks();
+            }
+        });
+        document.getElementById('savedPagesContainer').appendChild(savedPageElement);
+    }
+
+    function deleteSavedPage(id) {
+        let savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+        savedPages = savedPages.filter(page => page.id !== id);
+        savedPages.forEach((page, index) => {
+            page.id = index + 1; // Renumber after deletion
+        });
+        localStorage.setItem('savedPages', JSON.stringify(savedPages));
+        loadSavedPages();
+    }
+
+    function loadSavedPages() {
+        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+        document.getElementById('savedPagesContainer').innerHTML = '';
+        savedPages.forEach(page => createSavedPageElement(page.id));
+    }
+
+    loadSavedPages();
 });
 
 document.getElementById('linkForm').addEventListener('submit', function(e) {
