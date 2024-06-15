@@ -96,24 +96,24 @@ button:hover {
 #shareBtn.animated {
     animation: solidColorTransition 1s forwards;
     background-size: 200% 200%;
-    border-color: #00d2fc;
+    border-color: #00fc0d;
 }
 
 @keyframes solidColorTransition {
     0% {
-        background-color: #f30000;
+        background-color: rgb(0, 33, 164);
     }
     25% {
-        background-color: #ffc400;
+        background-color: #00727a;
     }
     50% {
-        background-color: #d45405;
+        background-color: #008145;
     }
     75% {
-        background-color: #d303a3;
+        background-color: #008f1a;
     }
     100% {
-        background-color: #004cfc;
+        background-color: #00c123;
     }
 }
 
@@ -410,10 +410,10 @@ button:hover {
     padding-right: 0.5rem;
     padding-top: 0.25rem;
     height: 28px;
-    border-top-right-radius: 5px; /* Скругление правого верхнего угла */
-    border-top-left-radius: 5px;  /* Скругление левого верхнего угла */
-    border-bottom-right-radius: 0; /* Без скругления правого нижнего угла */
-    border-bottom-left-radius: 0;  /* Без скругления левого нижнего угла */
+    border-top-right-radius: 5px; 
+    border-top-left-radius: 5px;  
+    border-bottom-right-radius: 0; 
+    border-bottom-left-radius: 0; 
     background-color: #000;
     color: #fff;
     display: flex;
@@ -422,7 +422,7 @@ button:hover {
     cursor: pointer;
     transition: background-color 0.3s;
     border-color: #0dff0078;
-    border-width: 1px 1px 0 1px; /* Убираем нижнюю часть рамки */
+    border-width: 1px 1px 0 1px; 
     border-style: solid;
     font-size: 1rem;
     color: #0dff0078;
