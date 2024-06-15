@@ -467,9 +467,9 @@ button:hover {
     cursor: pointer;
     transition: background-color 0.3s;
     position: relative;
-    border-top-right-radius: 5px; 
+    border-top-right-radius: 10px; 
     border-top-left-radius: 0px;  
-    border-bottom-right-radius: 5px; 
+    border-bottom-right-radius: 10px; 
     border-bottom-left-radius: 0;  
     background-color: #00000078;
 }
@@ -587,7 +587,13 @@ button:hover {
         
     }
 
-    #myLinksBtn, #connectWalletBtn {
+
+    #myLinksBtn {
+        width: 10%;
+    }
+
+
+    #connectWalletBtn {
         visibility: hidden;
     }
     
@@ -630,6 +636,7 @@ button:hover {
     .linkItem a {
         font-size: 1.2rem;
     }
+    
     #linkList {
         margin-left: 0%;
         width: 100%;
