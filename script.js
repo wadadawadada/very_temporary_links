@@ -298,6 +298,16 @@ function createLinkItem(title, description, url, imageUrl, isActive = false) {
     });
     linkItem.appendChild(numberContainer);
 
+    // Добавление кнопки комментариев
+    const commentBtn = document.createElement('div');
+    commentBtn.className = 'comment-btn';
+    commentBtn.textContent = '🗎';
+    commentBtn.setAttribute('data-url', url);
+    if (localStorage.getItem(`comment-${url}`)) {
+        commentBtn.classList.add('has-comment');
+    }
+    linkItem.appendChild(commentBtn);
+
     return linkItem;
 }
 
@@ -343,4 +353,53 @@ function removeLink(url) {
     links = links.filter(link => link.url !== url);
     localStorage.setItem('links', JSON.stringify(links));
     loadLinks();
+}
+
+// Обработчик для кнопки комментариев
+document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('comment-btn')) {
+        const url = event.target.getAttribute('data-url');
+        openCommentBox(url, event.target.parentElement);
+    }
+});
+
+function openCommentBox(url, linkItem) {
+    // Удаляем существующее окно комментариев, если оно есть
+    const existingCommentBox = linkItem.querySelector('.comment-box');
+    if (existingCommentBox) {
+        existingCommentBox.remove();
+        return;
+    }
+
+    const commentBox = document.createElement('div');
+    commentBox.className = 'comment-box';
+    const textarea = document.createElement('textarea');
+    textarea.className = 'comment-textarea';
+    textarea.value = localStorage.getItem(`comment-${url}`) || '';
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Close';
+    saveBtn.className = 'comment-save-btn';
+
+    textarea.addEventListener('input', () => {
+        if (textarea.value === localStorage.getItem(`comment-${url}`) || textarea.value === '') {
+            saveBtn.textContent = 'Close';
+        } else {
+            saveBtn.textContent = 'Save';
+        }
+    });
+
+    saveBtn.addEventListener('click', () => {
+        if (saveBtn.textContent === 'Save') {
+            localStorage.setItem(`comment-${url}`, textarea.value);
+            linkItem.querySelector('.comment-btn').classList.add('has-comment');
+        } else if (textarea.value === '') {
+            localStorage.removeItem(`comment-${url}`);
+            linkItem.querySelector('.comment-btn').classList.remove('has-comment');
+        }
+        commentBox.remove();
+    });
+
+    commentBox.appendChild(textarea);
+    commentBox.appendChild(saveBtn);
+    linkItem.appendChild(commentBox);
 }

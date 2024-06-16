@@ -23,7 +23,6 @@ h2 {
     text-align: center;
 }
 
-
 form {
     display: flex;
     flex-direction: column;
@@ -72,8 +71,6 @@ button:hover {
     border-style: solid;
 }
 
-
-
 #buttonMenu {
     display: flex;
     justify-content: space-between;
@@ -90,7 +87,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     padding: 0.1rem;
-    
 }
 
 #shareBtn.animated {
@@ -117,8 +113,6 @@ button:hover {
     }
 }
 
-
-
 #shareBtn {
     transition: background-color 0.5s ease, opacity 0.5s ease;
     transition: all 0.3s ease-in-out;
@@ -141,7 +135,6 @@ button:hover {
     scale: 1.1;
 }
 
-
 #shareBtn:hover {
     background-color: #004cfc;
     color: #ffffff;
@@ -158,7 +151,6 @@ button:hover {
     background-color: #ff07ee;
     border-color: #004cfc;
 }
-
 
 #myLinksBtn, #connectWalletBtn {
     background-color: #00ff3c;
@@ -180,12 +172,10 @@ button:hover {
     border-color: #fc00fc;
 }
 
-
 #connectWalletBtn {
     visibility: hidden;
     display: none;
 }
-
 
 .titleContainer {
     display: flex;
@@ -204,7 +194,6 @@ button:hover {
     text-align: center;
     flex-direction: row;
 }
-
 
 .infoInfo {
     position: relative;
@@ -240,11 +229,9 @@ button:hover {
     opacity: 1;
 }
 
-
 .tooltip p {
     margin: 0;
 }
-
 
 @keyframes animateColor {
     0% {
@@ -272,8 +259,6 @@ button:hover {
     margin-top: 15rem; 
 }
 
-
-
 #linkList {
     display: flex;
     flex-wrap: wrap;
@@ -287,7 +272,6 @@ button:hover {
     /* margin-top: calc(50% + 280px);  */
 }
 
-
 .linkItem {
     flex: 1 1 calc(25% - 2rem);
     background-color: #00000024;
@@ -300,6 +284,7 @@ button:hover {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 1s forwards;
+    position: relative;
 }
 
 @media (max-width: 1200px) {
@@ -337,7 +322,7 @@ button:hover {
     box-shadow: 0 0 15px 5px #0dff009e;
     transition: all 0.25s ease-in-out;
     border-color: #0dff00;
-    scale: 1.02;
+    scale: 1.00;
 }
 
 .linkItem img {
@@ -373,7 +358,6 @@ button:hover {
     text-overflow: ellipsis;
 }
 
-
 .delete-btn {
     position: absolute;
     top: 20px;
@@ -397,7 +381,7 @@ button:hover {
     background-color: #db0000;
     border-color: #ff0000;
     box-shadow: 0 0 7px 2px #ff0000;
-    scale: 1.2;
+    scale: 1.1;
     color: rgb(255, 255, 255);
 }
 
@@ -428,7 +412,6 @@ button:hover {
     color: #0dff0078;
 }
 
-
 .number-container.active {
     background-color: #0000ff;
     border-color: #0000ff;
@@ -436,15 +419,40 @@ button:hover {
     transition: all 0.3s ease-in-out;
 }
 
-/* .number-container:hover {
-    background-color: #121276;
-    border-color: #0000ff;
+/* Добавить стили для кнопки комментариев */
+.comment-btn {
+    position: absolute;
+    bottom: 0px;
+    left: 28px;
+    width: min-content;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    height: 28px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-color: #0dff0078;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    font-size: 1rem;
+    color: #0dff0078;
+}
+
+.comment-btn.has-comment {
+    background-color: blue;
+    border-color: blue;
     color: #ffffff;
-    transition: all 0.3s ease-in-out;
-} */
-
-
-
+    
+}
 
 #savedPagesContainer {
     position: fixed;
@@ -482,13 +490,11 @@ button:hover {
     color: #000000;
 }
 
-
 .savedPage.active {
     background-color: #00ff3c; /* Слегка светлее, чем обычный */
     border-color: #00ff3c;
     color: #000;
 }
-
 
 .savedPage .delete-tab-btn {
     position: absolute;
@@ -511,18 +517,12 @@ button:hover {
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease-in-out;
-
 }
-
 
 .savedPage:hover .delete-tab-btn {
     display: flex;
     transition: all 0.3s ease-in-out;
-
 }
-
-
-
 
 ::-webkit-scrollbar {
     width: 3px;
@@ -556,8 +556,43 @@ button:hover {
     border-radius: 10px;
 }
 
+/* Добавить стили для окна комментариев */
+.comment-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    padding: 20px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
 
+.comment-textarea {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+}
 
+.comment-save-btn {
+    padding: 10px;
+    background-color: #00ff3c;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    color: black;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.comment-save-btn:hover {
+    background-color: #00c123;
+}
 
 /*//////////////////////MOBILE STYLES/////////////////////*/
 
@@ -594,11 +629,9 @@ button:hover {
         display: none;
     }
 
-
     #myLinksBtn {
         width: 10%;
     }
-
 
     #connectWalletBtn {
         visibility: hidden;
@@ -617,7 +650,6 @@ button:hover {
         visibility: hidden;
     }
 
-        
     .container {
         margin-top: 0px;
         padding: 2rem;
@@ -640,7 +672,6 @@ button:hover {
         scale: none;
     }
 
-
     .linkItem a {
         font-size: 1.2rem;
     }
@@ -648,6 +679,5 @@ button:hover {
     #linkList {
         margin-left: 0%;
         width: 100%;
-
     }
 }
