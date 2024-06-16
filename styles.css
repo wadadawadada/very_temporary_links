@@ -449,8 +449,8 @@ button:hover {
 }
 
 .comment-btn.has-comment {
-    background-color: blue;
-    border-color: blue;
+    background-color: 0000ff;
+    border-color: 0000ff;
     color: #ffffff;
     
 }
@@ -592,7 +592,8 @@ button:hover {
 }
 
 .comment-save-btn:hover {
-    background-color: #00c123;
+    background-color: #00a226;
+    color: #ffffff;
 }
 
 /*//////////////////////MOBILE STYLES/////////////////////*/
