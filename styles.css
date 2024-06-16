@@ -425,8 +425,8 @@ button:hover {
     bottom: 0px;
     left: 28px;
     width: min-content;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.15rem;
+    padding-right: 0.15rem;
     padding-top: 0.25rem;
     height: 28px;
     border-top-right-radius: 5px;
