@@ -255,7 +255,7 @@ document.getElementById('toggleDirectionBtn').addEventListener('click', function
     }
 });
 
-function createLinkItem(title, description, url, imageUrl, isActive = false) {
+function createLinkItem(title, description, url, imageUrl, isActive = false, comment = '', hasComment = false) {
     let linkItem = document.createElement('div');
     linkItem.className = 'linkItem';
 
@@ -303,7 +303,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false) {
     commentBtn.className = 'comment-btn';
     commentBtn.textContent = '✉';
     commentBtn.setAttribute('data-url', url);
-    if (localStorage.getItem(`comment-${url}`)) {
+    if (hasComment) {
         commentBtn.classList.add('has-comment');
     }
     linkItem.appendChild(commentBtn);
@@ -324,7 +324,9 @@ function updateLinkActiveState(url, isActive) {
 
 function saveLink(link) {
     let links = JSON.parse(localStorage.getItem('links')) || [];
-    links.push({ ...link, isActive: false });
+    const comment = localStorage.getItem(`comment-${link.url}`) || '';
+    const hasComment = !!comment;
+    links.push({ ...link, isActive: false, comment, hasComment });
     localStorage.setItem('links', JSON.stringify(links));
 }
 
@@ -333,7 +335,7 @@ function loadLinks() {
     const linkList = document.getElementById('linkList');
     linkList.innerHTML = '';
     links.forEach(link => {
-        let linkItem = createLinkItem(link.title, link.description, link.url, link.image, link.isActive);
+        let linkItem = createLinkItem(link.title, link.description, link.url, link.image, link.isActive, link.comment, link.hasComment);
         linkList.appendChild(linkItem);
     });
 }
@@ -343,6 +345,11 @@ function loadLinksFromUrl() {
     const linksParam = urlParams.get('links');
     if (linksParam) {
         const links = JSON.parse(decodeURIComponent(linksParam));
+        links.forEach(link => {
+            if (link.comment) {
+                localStorage.setItem(`comment-${link.url}`, link.comment);
+            }
+        });
         localStorage.setItem('links', JSON.stringify(links));
         loadLinks();
     }
@@ -392,9 +399,11 @@ function openCommentBox(url, linkItem) {
         if (saveBtn.textContent === 'Save') {
             localStorage.setItem(`comment-${url}`, textarea.value);
             linkItem.querySelector('.comment-btn').classList.add('has-comment');
+            updateLinkCommentStatus(url, true, textarea.value);
         } else if (textarea.value === '') {
             localStorage.removeItem(`comment-${url}`);
             linkItem.querySelector('.comment-btn').classList.remove('has-comment');
+            updateLinkCommentStatus(url, false, '');
         }
         commentBox.remove();
     });
@@ -402,4 +411,15 @@ function openCommentBox(url, linkItem) {
     commentBox.appendChild(textarea);
     commentBox.appendChild(saveBtn);
     linkItem.appendChild(commentBox);
+}
+
+function updateLinkCommentStatus(url, hasComment, comment) {
+    let links = JSON.parse(localStorage.getItem('links')) || [];
+    links = links.map(link => {
+        if (link.url === url) {
+            return { ...link, hasComment, comment };
+        }
+        return link;
+    });
+    localStorage.setItem('links', JSON.stringify(links));
 }
