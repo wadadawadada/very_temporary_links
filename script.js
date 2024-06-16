@@ -301,7 +301,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false) {
     // Добавление кнопки комментариев
     const commentBtn = document.createElement('div');
     commentBtn.className = 'comment-btn';
-    commentBtn.textContent = '🗒';
+    commentBtn.textContent = '✉';
     commentBtn.setAttribute('data-url', url);
     if (localStorage.getItem(`comment-${url}`)) {
         commentBtn.classList.add('has-comment');
