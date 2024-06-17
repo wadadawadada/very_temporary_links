@@ -639,7 +639,7 @@ button:hover {
 
 /* Добавить стили для контейнера сгенерированной ссылки */
 #generatedLinkContainer.hidden {
-    /* display: none; */
+    display: none;
 }
 
 #generatedLinkContainer {
