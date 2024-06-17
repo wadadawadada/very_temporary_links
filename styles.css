@@ -639,7 +639,7 @@ button:hover {
 
 /* Добавить стили для контейнера сгенерированной ссылки */
 #generatedLinkContainer.hidden {
-    display: none;
+    /* display: none; */
 }
 
 #generatedLinkContainer {
@@ -764,7 +764,7 @@ button:hover {
         align-items: flex-start;
         display:flex;
         width: 90%;
-        max-width: min-content;
+        max-width: max-content;
        
     }
     
