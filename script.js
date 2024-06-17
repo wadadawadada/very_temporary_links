@@ -1,7 +1,77 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
-    
+
+    const isMobile = window.matchMedia("only screen and (max-width: 600px)").matches;
+
+    document.getElementById('shareBtn').addEventListener('click', function() {
+        const shareBtn = this;
+        const originalContent = shareBtn.innerHTML; // Store the original content of the button
+
+        shareBtn.classList.add('animated');
+
+        shareBtn.addEventListener('animationend', function handler() {
+            shareBtn.removeEventListener('animationend', handler);
+            const currentLinks = JSON.parse(localStorage.getItem('links')) || [];
+            const linksParam = encodeURIComponent(JSON.stringify(currentLinks));
+            const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
+
+            fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    url: longUrl,
+                    domain: "tinyurl.com"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.data) {
+                    const shortUrl = data.data.tiny_url;
+
+                    if (isMobile) {
+                        const generatedLinkContainer = document.getElementById('generatedLinkContainer');
+                        const generatedLinkInput = document.getElementById('generatedLink');
+                        generatedLinkInput.value = shortUrl;
+                        generatedLinkContainer.classList.remove('hidden');
+                    } else {
+                        navigator.clipboard.writeText(shortUrl).then(() => {
+                            shareBtn.innerHTML = 'Copied!';
+                            setTimeout(() => {
+                                shareBtn.innerHTML = originalContent;
+                            }, 2000); // Show "Copied!" for 2 seconds
+                        }).catch(err => {
+                            console.error('Error copying to clipboard: ', err);
+                        });
+                    }
+
+                    shareBtn.classList.remove('animated');
+                } else {
+                    console.error('Error shortening URL: ', data);
+                    shareBtn.classList.remove('animated');
+                }
+            })
+            .catch(err => {
+                console.error('Error shortening URL: ', err);
+                shareBtn.classList.remove('animated');
+            });
+        });
+    });
+
+    document.getElementById('copyLinkBtn').addEventListener('click', function() {
+        const generatedLinkInput = document.getElementById('generatedLink');
+        generatedLinkInput.select();
+        generatedLinkInput.setSelectionRange(0, 99999); // For mobile devices
+
+        navigator.clipboard.writeText(generatedLinkInput.value).then(() => {
+            alert('Link copied to clipboard!');
+        }).catch(err => {
+            console.error('Error copying to clipboard: ', err);
+        });
+    });
+
     const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
 
     const infoIcon = document.querySelector('.infoInfo');
@@ -61,61 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         localStorage.removeItem('links');
         loadLinks();
-    });
-
-    document.getElementById('shareBtn').addEventListener('click', function() {
-        const shareBtn = this;
-        const originalContent = shareBtn.innerHTML; // Store the original content of the button
-
-        shareBtn.classList.add('animated');
-
-        shareBtn.addEventListener('animationend', function handler() {
-            shareBtn.removeEventListener('animationend', handler);
-            const currentLinks = JSON.parse(localStorage.getItem('links')) || [];
-            const linksParam = encodeURIComponent(JSON.stringify(currentLinks));
-            const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
-
-            fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    url: longUrl,
-                    domain: "tinyurl.com"
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.data) {
-                    const shortUrl = data.data.tiny_url;
-                    const generatedLinkContainer = document.getElementById('generatedLinkContainer');
-                    const generatedLinkInput = document.getElementById('generatedLink');
-                    generatedLinkInput.value = shortUrl;
-                    generatedLinkContainer.classList.remove('hidden');
-                    shareBtn.classList.remove('animated');
-                } else {
-                    console.error('Error shortening URL: ', data);
-                    shareBtn.classList.remove('animated');
-                }
-            })
-            .catch(err => {
-                console.error('Error shortening URL: ', err);
-                shareBtn.classList.remove('animated');
-            });
-        });
-    });
-
-    document.getElementById('copyLinkBtn').addEventListener('click', function() {
-        const generatedLinkInput = document.getElementById('generatedLink');
-        generatedLinkInput.select();
-        generatedLinkInput.setSelectionRange(0, 99999); // For mobile devices
-
-        navigator.clipboard.writeText(generatedLinkInput.value).then(() => {
-            alert('Link copied to clipboard!');
-        }).catch(err => {
-            console.error('Error copying to clipboard: ', err);
-        });
     });
 
     function createSavedPageElement(id) {
