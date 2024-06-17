@@ -89,22 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.data) {
                     const shortUrl = data.data.tiny_url;
-                    navigator.clipboard.writeText(shortUrl).then(() => {
-                        shareBtn.classList.remove('animated');
-                        shareBtn.classList.add('copied');
-                        share
-
-                        Btn.innerHTML = 'Copied!';
-
-                        setTimeout(() => {
-                            shareBtn.classList.remove('copied');
-                            shareBtn.innerHTML = originalContent;
-                            shareBtn.style.backgroundColor = ''; // Reset background color
-                        }, 1000); // Reset after 3 seconds
-                    }).catch(err => {
-                        console.error('Error copying to clipboard: ', err);
-                        shareBtn.classList.remove('animated');
-                    });
+                    const generatedLinkContainer = document.getElementById('generatedLinkContainer');
+                    const generatedLinkInput = document.getElementById('generatedLink');
+                    generatedLinkInput.value = shortUrl;
+                    generatedLinkContainer.classList.remove('hidden');
+                    shareBtn.classList.remove('animated');
                 } else {
                     console.error('Error shortening URL: ', data);
                     shareBtn.classList.remove('animated');
@@ -114,6 +103,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error shortening URL: ', err);
                 shareBtn.classList.remove('animated');
             });
+        });
+    });
+
+    document.getElementById('copyLinkBtn').addEventListener('click', function() {
+        const generatedLinkInput = document.getElementById('generatedLink');
+        generatedLinkInput.select();
+        generatedLinkInput.setSelectionRange(0, 99999); // For mobile devices
+
+        navigator.clipboard.writeText(generatedLinkInput.value).then(() => {
+            alert('Link copied to clipboard!');
+        }).catch(err => {
+            console.error('Error copying to clipboard: ', err);
         });
     });
 
@@ -194,67 +195,6 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             console.error('Error fetching data:', error);
             alert('Could not fetch data');
         });
-});
-
-document.getElementById('shareBtn').addEventListener('click', function() {
-    const shareBtn = this;
-    const originalContent = shareBtn.innerHTML; // Store the original content of the button
-
-    shareBtn.classList.add('animated');
-
-    shareBtn.addEventListener('animationend', function handler() {
-        shareBtn.removeEventListener('animationend', handler);
-        const links = JSON.parse(localStorage.getItem('links')) || [];
-        const linksParam = encodeURIComponent(JSON.stringify(links));
-        const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
-
-        fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                url: longUrl,
-                domain: "tinyurl.com"
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.data) {
-                const shortUrl = data.data.tiny_url;
-                navigator.clipboard.writeText(shortUrl).then(() => {
-                    shareBtn.classList.remove('animated');
-                    shareBtn.classList.add('copied');
-                    shareBtn.innerHTML = 'Copied!';
-                    
-                    setTimeout(() => {
-                        shareBtn.classList.remove('copied');
-                        shareBtn.innerHTML = originalContent;
-                        shareBtn.style.backgroundColor = ''; // Reset background color
-                    }, 1000); // Reset after 3 seconds
-                }).catch(err => {
-                    console.error('Error copying to clipboard: ', err);
-                    shareBtn.classList.remove('animated');
-                });
-            } else {
-                console.error('Error shortening URL: ', data);
-                shareBtn.classList.remove('animated');
-            }
-        })
-        .catch(err => {
-            console.error('Error shortening URL: ', err);
-            shareBtn.classList.remove('animated');
-        });
-    });
-});
-
-document.getElementById('toggleDirectionBtn').addEventListener('click', function() {
-    const linkList = document.getElementById('linkList');
-    if (linkList.style.flexDirection === 'row') {
-        linkList.style.flexDirection = 'column';
-    } else {
-        linkList.style.flexDirection = 'row';
-    }
 });
 
 function createLinkItem(title, description, url, imageUrl, isActive = false, comment = '', hasComment = false) {
@@ -449,4 +389,3 @@ window.onload = () => {
     resetAnimation();
     setInterval(resetAnimation, 18000);
 };
-                 
