@@ -179,6 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadSavedPages();
+
+    const toggleDirectionBtn = document.getElementById('toggleDirectionBtn');
+    const linkList = document.getElementById('linkList');
+    let isGrid = true; // Initial layout is grid
+
+    toggleDirectionBtn.addEventListener('click', () => {
+        if (isGrid) {
+            linkList.classList.remove('grid-layout');
+            linkList.classList.add('column-layout');
+        } else {
+            linkList.classList.remove('column-layout');
+            linkList.classList.add('grid-layout');
+        }
+        isGrid = !isGrid;
+    });
 });
 
 document.getElementById('linkForm').addEventListener('submit', function(e) {

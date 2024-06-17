@@ -30,7 +30,7 @@ form {
     top: 0; 
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
     padding: 2rem;
     border-radius: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -296,12 +296,10 @@ button:hover {
     width: 50%;
     gap: 2rem;
     padding-bottom: 100px; /* Additional bottom padding */
-    /* position: relative; */
-    /* margin-top: calc(50% + 280px);  */
 }
 
 .linkItem {
-    flex: 1 1 calc(25% - 2rem);
+    flex: 1 1 calc(25% - 2rem); /* Adjust as needed for grid layout */
     background-color: #00000024;
     padding: 2rem;
     border-color: #0dff0057;
@@ -447,7 +445,7 @@ button:hover {
     transition: all 0.3s ease-in-out;
 }
 
-/* Добавить стили для кнопки комментариев */
+/* Styles for the comment button */
 .comment-btn {
     position: absolute;
     bottom: 0px;
@@ -533,7 +531,7 @@ button:hover {
 }
 
 .savedPage.active {
-    background-color: #00ff3c; /* Слегка светлее, чем обычный */
+    background-color: #00ff3c; /* Slightly lighter than normal */
     border-color: #00ff3c;
     color: #000;
 }
@@ -549,12 +547,6 @@ button:hover {
     color: white;
     border: none;
     border-radius: 50%;
-    /* border-width: 1px;
-    border-style: solid;
-    border-color: #00ff3c; */
-    font-size: 8px;
-    display: none;
-    cursor: pointer;
     display: none;
     justify-content: center;
     align-items: center;
@@ -598,7 +590,7 @@ button:hover {
     border-radius: 10px;
 }
 
-/* Добавить стили для окна комментариев */
+/* Styles for the comment box */
 .comment-box {
     position: absolute;
     top: 0;
@@ -637,7 +629,7 @@ button:hover {
     color: #ffffff;
 }
 
-/* Добавить стили для контейнера сгенерированной ссылки */
+/* Styles for the generated link container */
 #generatedLinkContainer.hidden {
     display: none;
 }
@@ -672,6 +664,21 @@ button:hover {
     cursor: pointer;
     color: #000;
     margin-left: 10px;
+}
+
+/* Grid and column layouts for linkList */
+#linkList.grid-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+#linkList.column-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 @media (max-width: 600px) {
