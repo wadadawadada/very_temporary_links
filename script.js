@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
-
+    
     const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
 
     const infoIcon = document.querySelector('.infoInfo');
@@ -92,7 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     navigator.clipboard.writeText(shortUrl).then(() => {
                         shareBtn.classList.remove('animated');
                         shareBtn.classList.add('copied');
-                        shareBtn.innerHTML = 'Copied!';
+                        share
+
+                        Btn.innerHTML = 'Copied!';
 
                         setTimeout(() => {
                             shareBtn.classList.remove('copied');
@@ -423,3 +425,28 @@ function updateLinkCommentStatus(url, hasComment, comment) {
     });
     localStorage.setItem('links', JSON.stringify(links));
 }
+
+// Function to animate the placeholder text
+function typewriterEffect(element, text, interval = 100) {
+    let index = 0;
+    function type() {
+        if (index < text.length) {
+            element.placeholder += text.charAt(index);
+            index++;
+            setTimeout(type, interval);
+        }
+    }
+    type();
+}
+
+function resetAnimation() {
+    const placeholder = document.getElementById('linkUrl');
+    placeholder.placeholder = ""; // Clear the placeholder
+    typewriterEffect(placeholder, placeholder.getAttribute('data-text')); // Restart the typing effect
+}
+
+window.onload = () => {
+    resetAnimation();
+    setInterval(resetAnimation, 18000);
+};
+                 
