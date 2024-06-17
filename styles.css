@@ -510,7 +510,7 @@ button:hover {
     border-color: #0dff0078;
     border-style: solid;
     border-width: 1px 1px 1px 0px;
-    color: #0dff0078;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -535,6 +535,61 @@ button:hover {
     border-color: #00ff3c;
     color: #000;
 }
+
+
+/* Define color classes */
+.savedPage.color1 {
+    border-color: #FF5733; /* Example color */
+}
+
+.savedPage.color2 {
+    border-color: #33FF57; /* Example color */
+}
+
+.savedPage.color3 {
+    border-color: #3357FF; /* Example color */
+}
+
+.savedPage.color4 {
+    border-color: #915002f0; /* Example color */
+}
+
+.savedPage.color5 {
+    border-color: #c3ff00; /* Example color */
+}
+
+.savedPage.color6 {
+    border-color: #7e0218; /* Example color */
+}
+
+
+/* Active savedPage should have same background color as its border */
+.savedPage.active {
+    background-color: #33FF57;
+    border-color: #33FF57;
+    color: #000000;
+}
+
+.savedPage:hover {
+    border-color: #33FF57; 
+}
+
+/* Ensure linkItem's border and text color matches active savedPage */
+.linkItem.active {
+    border-color: inherit;
+    color: inherit;
+}
+
+.linkItem.active a {
+    color: inherit;
+}
+
+.linkItem.active p {
+    color: inherit;
+}
+
+
+
 
 .savedPage .delete-tab-btn {
     position: absolute;

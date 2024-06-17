@@ -139,6 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
         savedPageElement.setAttribute('data-id', id);
         savedPageElement.textContent = id;
 
+        // Assign a random or sequential color class
+        const colorClass = `color${(id % 6) + 1}`; // Assuming 3 different colors, adjust accordingly
+        savedPageElement.classList.add(colorClass);
+
         const deleteTabBtn = document.createElement('button');
         deleteTabBtn.className = 'delete-tab-btn';
         deleteTabBtn.textContent = 'X';
@@ -159,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadLinks();
             }
         });
+
         document.getElementById('savedPagesContainer').appendChild(savedPageElement);
     }
 
