@@ -30,8 +30,22 @@
         <div class="buttonMenu" id="buttonMenu">
             <button type="submit" id="saveButton">Add</button>
             <button type="button" id="shareBtn">Share</button>
-            <button type="button" id="toggleDirectionBtn">👁️</button>
-            <button type="button" id="myLinksBtn">💾</button>
+
+
+            <button type="button" id="toggleDirectionBtn">
+                
+                <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                <lord-icon
+                    src="https://cdn.lordicon.com/vfczflna.json"
+                    trigger="click"
+                    stroke="bold"
+                    colors="primary:#00ff3c,secondary:#00ff3c"
+                    style="width:100%;height:150%;top:-25%;">
+                </lord-icon>
+            </button>
+
+
+            <button type="button" id="myLinksBtn">+</button>
             <button type="button" id="connectWalletBtn">🥷🏼</button>
         </div>
         <div id="generatedLinkContainer" class="hidden">
@@ -58,7 +72,12 @@
                 </div>
             </div>
         </div>
-        <div id="linkList" class="grid-layout"></div>
+        
+        <div class="titleInputContainer hidden" id="titleInputContainer">
+            <input type="text" id="pageTitle" placeholder="Enter collection title here" />
+        </div>
+
+        <div id="linkList"></div>
         <div id="savedPagesContainer"></div>
     </div>
     <script src="script.js"></script>

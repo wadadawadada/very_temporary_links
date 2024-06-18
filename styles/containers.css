@@ -1,0 +1,154 @@
+.container {
+    border-radius: 8px;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    margin-top: 15rem;
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4rem;
+}
+
+.saveLinksTitle {
+    font-size: 3rem;
+    background-image: linear-gradient(to right, #2600ff, #007bff, #1eff00, #f0b3b3, #ede1e1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: animateColor 4s linear infinite alternate-reverse;
+    text-align: center;
+    flex-direction: row;
+}
+
+@keyframes animateColor {
+    0% {
+        color: #ff2b2b;
+    }
+    25% {
+        color: #00000000;
+    }
+    50% {
+        color: #ff00e600;
+    }
+    75% {
+        color: #ff0000;
+    }
+    100% {
+        color: #00000000;
+    }
+}
+
+#linkList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    gap: 2rem;
+    padding-bottom: 100px;
+}
+
+.linkItem {
+    flex: 1 1 calc(25% - 2rem);
+    background-color: #00000024;
+    padding: 2rem;
+    border-color: #0dff0057;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 25px;
+    transition: all 0.4s ease-in-out;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s forwards;
+    position: relative;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.linkItem:hover {
+    box-shadow: 0 0 15px 5px #0dff009e;
+    transition: all 0.25s ease-in-out;
+    border-color: #0dff00;
+    scale: 1.00;
+}
+
+.linkItem img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 25px;
+}
+
+.linkItem a {
+    color: #3cff00;
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.linkItem a:hover {
+    text-decoration: underline;
+}
+
+.linkItem p {
+    margin-top: 1.5rem;
+    line-height: 1.5rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hidden {
+    display: none;
+}
+
+#generatedLinkContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #000;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#generatedLinkContainer.hidden {
+    display: none;
+}
+
+#generatedLink {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid #00fc11;
+    border-radius: 25px;
+    background-color: #000;
+    color: #0dff00;
+    border-style: none;
+}
+
+#copyLinkBtn {
+    padding: 5px 10px;
+    background-color: #00ff3c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    margin-left: 10px;
+}

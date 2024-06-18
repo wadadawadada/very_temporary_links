@@ -4,6 +4,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const isMobile = window.matchMedia("only screen and (max-width: 600px)").matches;
 
+    // Load saved title for the current page
+    const currentTitle = localStorage.getItem('currentTitle');
+    if (currentTitle) {
+        document.getElementById('pageTitle').value = currentTitle;
+        document.getElementById('titleInputContainer').classList.remove('hidden');
+    }
+
+    document.getElementById('pageTitle').addEventListener('input', function() {
+        localStorage.setItem('currentTitle', this.value);
+        updatePageTitleOnTabs(this.value); // Update the title on all tabs
+    });
+
+    function updatePageTitleOnTabs(title) {
+        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+        const activePage = document.querySelector('.savedPage.active');
+        if (activePage) {
+            const activePageId = parseInt(activePage.getAttribute('data-id'));
+            savedPages.forEach(page => {
+                if (page.id === activePageId) {
+                    page.title = title;
+                }
+            });
+            localStorage.setItem('savedPages', JSON.stringify(savedPages));
+            loadSavedPages();
+        }
+    }
+
+    function loadSavedPages() {
+        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+        document.getElementById('savedPagesContainer').innerHTML = '';
+        savedPages.forEach(page => createSavedPageElement(page.id, page.title));
+    }
+
+    function createSavedPageElement(id, title) {
+        const savedPageElement = document.createElement('div');
+        savedPageElement.className = 'savedPage';
+        savedPageElement.setAttribute('data-id', id);
+
+        const pageTitle = document.createElement('div');
+        pageTitle.className = 'savedPageTitle';
+        pageTitle.textContent = title || `Page ${id}`;
+
+        savedPageElement.appendChild(pageTitle);
+
+        // Assign a random or sequential color class
+        const colorClass = `color${(id % 6) + 1}`; // Assuming 6 different colors, adjust accordingly
+        savedPageElement.classList.add(colorClass);
+
+        const deleteTabBtn = document.createElement('button');
+        deleteTabBtn.className = 'delete-tab-btn';
+        deleteTabBtn.textContent = 'X';
+        deleteTabBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            deleteSavedPage(id);
+        });
+        savedPageElement.appendChild(deleteTabBtn);
+
+        savedPageElement.addEventListener('click', () => {
+            document.querySelectorAll('.savedPage').forEach(page => page.classList.remove('active'));
+            savedPageElement.classList.add('active');
+
+            const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+            const page = savedPages.find(page => page.id === id);
+            if (page) {
+                localStorage.setItem('links', JSON.stringify(page.links));
+                localStorage.setItem('currentTitle', page.title);
+                document.getElementById('pageTitle').value = page.title;
+                loadLinks();
+            }
+        });
+
+        document.getElementById('savedPagesContainer').appendChild(savedPageElement);
+    }
+
     document.getElementById('shareBtn').addEventListener('click', function() {
         const shareBtn = this;
         const originalContent = shareBtn.innerHTML; // Store the original content of the button
@@ -115,10 +189,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const title = document.getElementById('pageTitle').value;
         const pageCount = savedPages.length + 1;
 
         const savedPage = {
             id: pageCount,
+            title: title || `Page ${pageCount}`,
             links: currentLinks
         };
 
@@ -127,20 +203,27 @@ document.addEventListener('DOMContentLoaded', () => {
         savedPages.push(savedPage);
         localStorage.setItem('savedPages', JSON.stringify(savedPages));
 
-        createSavedPageElement(savedPage.id);
+        createSavedPageElement(savedPage.id, savedPage.title);
 
         localStorage.removeItem('links');
+        localStorage.removeItem('currentTitle');
+        document.getElementById('pageTitle').value = '';
         loadLinks();
     });
 
-    function createSavedPageElement(id) {
+    function createSavedPageElement(id, title) {
         const savedPageElement = document.createElement('div');
         savedPageElement.className = 'savedPage';
         savedPageElement.setAttribute('data-id', id);
-        savedPageElement.textContent = id;
+
+        const pageTitle = document.createElement('div');
+        pageTitle.className = 'savedPageTitle';
+        pageTitle.textContent = title || `Page ${id}`;
+
+        savedPageElement.appendChild(pageTitle);
 
         // Assign a random or sequential color class
-        const colorClass = `color${(id % 6) + 1}`; // Assuming 3 different colors, adjust accordingly
+        const colorClass = `color${(id % 6) + 1}`; // Assuming 6 different colors, adjust accordingly
         savedPageElement.classList.add(colorClass);
 
         const deleteTabBtn = document.createElement('button');
@@ -160,6 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const page = savedPages.find(page => page.id === id);
             if (page) {
                 localStorage.setItem('links', JSON.stringify(page.links));
+                localStorage.setItem('currentTitle', page.title);
+                document.getElementById('pageTitle').value = page.title;
                 loadLinks();
             }
         });
@@ -180,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadSavedPages() {
         const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
         document.getElementById('savedPagesContainer').innerHTML = '';
-        savedPages.forEach(page => createSavedPageElement(page.id));
+        savedPages.forEach(page => createSavedPageElement(page.id, page.title));
     }
 
     loadSavedPages();
@@ -225,6 +310,8 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             linkItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             document.getElementById('linkUrl').value = '';
+            // Show the title input container once a link is added
+            document.getElementById('titleInputContainer').classList.remove('hidden');
         })
         .catch(error => {
             console.error('Error fetching data:', error);
