@@ -442,6 +442,28 @@ button:hover {
     border-radius: 25px;
 }
 
+/*///////////////////////////DRAW/////////////////////////////*/
+.imgContainer {
+    position: relative;
+}
+
+.pencilIcon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.pencilIcon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/*//////////////////////////////*/
+
 .linkItem a {
     color: #3cff00;
     text-decoration: none;
