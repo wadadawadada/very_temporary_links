@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
+    checkLinkItems(); // Initial check on load
 
     const isMobile = window.matchMedia("only screen and (max-width: 600px)").matches;
 
@@ -260,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         localStorage.setItem('savedPages', JSON.stringify(savedPages));
         loadSavedPages();
+        checkLinkItems(); // Check after deleting a saved page
     }
 
     function loadSavedPages() {
@@ -312,6 +314,7 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             document.getElementById('linkUrl').value = '';
             // Show the title input container once a link is added
             document.getElementById('titleInputContainer').classList.remove('hidden');
+            checkLinkItems(); // Check after adding a new link
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -347,6 +350,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
     deleteBtn.addEventListener('click', function() {
         removeLink(url);
         linkItem.remove();
+        checkLinkItems(); // Check after removing a link
     });
     linkItem.appendChild(deleteBtn);
 
@@ -402,6 +406,7 @@ function loadLinks() {
         let linkItem = createLinkItem(link.title, link.description, link.url, link.image, link.isActive, link.comment, link.hasComment);
         linkList.appendChild(linkItem);
     });
+    checkLinkItems(); // Check after loading links
 }
 
 function loadLinksFromUrl() {
@@ -424,6 +429,7 @@ function removeLink(url) {
     links = links.filter(link => link.url !== url);
     localStorage.setItem('links', JSON.stringify(links));
     loadLinks();
+    checkLinkItems(); // Check after removing a link
 }
 
 // Обработчик для кнопки комментариев
@@ -486,6 +492,16 @@ function updateLinkCommentStatus(url, hasComment, comment) {
         return link;
     });
     localStorage.setItem('links', JSON.stringify(links));
+}
+
+function checkLinkItems() {
+    const linkItems = document.querySelectorAll('.linkItem');
+    const titleInputContainer = document.getElementById('titleInputContainer');
+    if (linkItems.length === 0) {
+        titleInputContainer.classList.add('hidden');
+    } else {
+        titleInputContainer.classList.remove('hidden');
+    }
 }
 
 // Function to animate the placeholder text
