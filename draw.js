@@ -10,7 +10,14 @@ function enableDrawing(container) {
     container.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const savedData = localStorage.getItem(`drawing-${img.src}`);
+    if (savedData) {
+        const imgData = new Image();
+        imgData.src = savedData;
+        imgData.onload = () => ctx.drawImage(imgData, 0, 0, canvas.width, canvas.height);
+    } else {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    }
 
     canvas.addEventListener('mousedown', (e) => {
         isDrawing = true;
@@ -21,17 +28,21 @@ function enableDrawing(container) {
     canvas.addEventListener('mouseup', () => isDrawing = false);
     canvas.addEventListener('mouseout', () => isDrawing = false);
 
-    
-
     function draw(e) {
         if (!isDrawing) return;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.strokeStyle = '#ff0000';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 5;
         ctx.stroke();
         [x, y] = [e.offsetX, e.offsetY];
+        saveDrawing();
+    }
+
+    function saveDrawing() {
+        const dataUrl = canvas.toDataURL();
+        localStorage.setItem(`drawing-${img.src}`, dataUrl);
     }
 
     container.querySelector('img').style.display = 'none';
