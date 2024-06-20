@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const isMobile = window.matchMedia("only screen and (max-width: 600px)").matches;
 
-    // Load saved title for the current page
     const currentTitle = localStorage.getItem('currentTitle');
     if (currentTitle) {
         document.getElementById('pageTitle').value = currentTitle;
@@ -14,70 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('pageTitle').addEventListener('input', function() {
         localStorage.setItem('currentTitle', this.value);
-        updatePageTitleOnTabs(this.value); // Update the title on all tabs
+        updatePageTitleOnTabs(this.value);
     });
 
-    function updatePageTitleOnTabs(title) {
-        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
-        const activePage = document.querySelector('.savedPage.active');
-        if (activePage) {
-            const activePageId = parseInt(activePage.getAttribute('data-id'));
-            savedPages.forEach(page => {
-                if (page.id === activePageId) {
-                    page.title = title;
-                }
-            });
-            localStorage.setItem('savedPages', JSON.stringify(savedPages));
-            loadSavedPages();
-        }
-    }
-
-    function loadSavedPages() {
-        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
-        document.getElementById('savedPagesContainer').innerHTML = '';
-        savedPages.forEach(page => createSavedPageElement(page.id, page.title));
-    }
-
-    function createSavedPageElement(id, title) {
-        const savedPageElement = document.createElement('div');
-        savedPageElement.className = 'savedPage';
-        savedPageElement.setAttribute('data-id', id);
-
-        const pageTitle = document.createElement('div');
-        pageTitle.className = 'savedPageTitle';
-        pageTitle.textContent = title || `Page ${id}`;
-
-        savedPageElement.appendChild(pageTitle);
-
-        // Assign a random or sequential color class
-        const colorClass = `color${(id % 6) + 1}`; // Assuming 6 different colors, adjust accordingly
-        savedPageElement.classList.add(colorClass);
-
-        const deleteTabBtn = document.createElement('button');
-        deleteTabBtn.className = 'delete-tab-btn';
-        deleteTabBtn.textContent = 'X';
-        deleteTabBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            deleteSavedPage(id);
-        });
-        savedPageElement.appendChild(deleteTabBtn);
-
-        savedPageElement.addEventListener('click', () => {
-            document.querySelectorAll('.savedPage').forEach(page => page.classList.remove('active'));
-            savedPageElement.classList.add('active');
-
-            const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
-            const page = savedPages.find(page => page.id === id);
-            if (page) {
-                localStorage.setItem('links', JSON.stringify(page.links));
-                localStorage.setItem('currentTitle', page.title);
-                document.getElementById('pageTitle').value = page.title;
-                loadLinks();
-            }
-        });
-
-        document.getElementById('savedPagesContainer').appendChild(savedPageElement);
-    }
+    loadSavedPages();
 
     document.getElementById('shareBtn').addEventListener('click', function() {
         const shareBtn = this;
@@ -183,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('myLinksBtn').addEventListener('click', () => {
-        console.log('myLinksBtn clicked');
         const currentLinks = JSON.parse(localStorage.getItem('links')) || [];
         if (currentLinks.length === 0) {
             alert('No links to save.');
@@ -199,8 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
             links: currentLinks
         };
 
-        console.log('Saving page:', savedPage);
-
         savedPages.push(savedPage);
         localStorage.setItem('savedPages', JSON.stringify(savedPages));
 
@@ -211,6 +147,27 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pageTitle').value = '';
         loadLinks();
     });
+
+    function updatePageTitleOnTabs(title) {
+        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+        const activePage = document.querySelector('.savedPage.active');
+        if (activePage) {
+            const activePageId = parseInt(activePage.getAttribute('data-id'));
+            savedPages.forEach(page => {
+                if (page.id === activePageId) {
+                    page.title = title;
+                }
+            });
+            localStorage.setItem('savedPages', JSON.stringify(savedPages));
+            loadSavedPages();
+        }
+    }
+
+    function loadSavedPages() {
+        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
+        document.getElementById('savedPagesContainer').innerHTML = '';
+        savedPages.forEach(page => createSavedPageElement(page.id, page.title));
+    }
 
     function createSavedPageElement(id, title) {
         const savedPageElement = document.createElement('div');
@@ -223,8 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         savedPageElement.appendChild(pageTitle);
 
-        // Assign a random or sequential color class
-        const colorClass = `color${(id % 6) + 1}`; // Assuming 6 different colors, adjust accordingly
+        const colorClass = `color${(id % 6) + 1}`;
         savedPageElement.classList.add(colorClass);
 
         const deleteTabBtn = document.createElement('button');
@@ -264,13 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
         checkLinkItems(); // Check after deleting a saved page
     }
 
-    function loadSavedPages() {
-        const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
-        document.getElementById('savedPagesContainer').innerHTML = '';
-        savedPages.forEach(page => createSavedPageElement(page.id, page.title));
-    }
-
     loadSavedPages();
+
+    document.querySelectorAll('.imgContainer').forEach(container => {
+        enableDrawing(container);
+    });
 
     const toggleDirectionBtn = document.getElementById('toggleDirectionBtn');
     const linkList = document.getElementById('linkList');
@@ -316,7 +270,6 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
             linkItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             document.getElementById('linkUrl').value = '';
-            // Show the title input container once a link is added
             document.getElementById('titleInputContainer').classList.remove('hidden');
             checkLinkItems(); // Check after adding a new link
         })
@@ -428,6 +381,9 @@ function loadLinks() {
         linkList.appendChild(linkItem);
     });
     checkLinkItems(); // Check after loading links
+    document.querySelectorAll('.imgContainer').forEach(container => {
+        enableDrawing(container);
+    });
 }
 
 function loadLinksFromUrl() {
@@ -551,44 +507,84 @@ window.onload = () => {
 
 // Drawing functionality
 function enableDrawing(container) {
-    const canvas = document.createElement('canvas');
+    let canvas = container.querySelector('canvas');
     const img = container.querySelector('img');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    container.appendChild(canvas);
+
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.style.position = 'absolute';
+        canvas.style.top = img.offsetTop + 'px';
+        canvas.style.left = img.offsetLeft + 'px';
+        container.appendChild(canvas);
+        resizeCanvas(canvas, img);
+    }
 
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    let isDrawing = false;
-    let x = 0;
-    let y = 0;
+    const savedPaths = JSON.parse(localStorage.getItem(`drawing-paths-${img.src}`)) || [];
+    if (savedPaths.length > 0) {
+        paths[img.src] = savedPaths;
+        redrawPaths(ctx, savedPaths, canvas, img);
+    }
 
     canvas.addEventListener('mousedown', (e) => {
         isDrawing = true;
         [x, y] = [e.offsetX, e.offsetY];
+        currentPath = [{ x, y }];
     });
 
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mousemove', (e) => draw(e, ctx, canvas, img));
+    canvas.addEventListener('mouseup', () => {
+        if (isDrawing) {
+            isDrawing = false;
+            paths[img.src] = paths[img.src] || [];
+            paths[img.src].push(currentPath);
+            savePaths(img.src, paths[img.src]);
+        }
+    });
     canvas.addEventListener('mouseout', () => isDrawing = false);
 
-    function draw(e) {
-        if (!isDrawing) return;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.strokeStyle = '#ff0000';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        [x, y] = [e.offsetX, e.offsetY];
-    }
+    window.addEventListener('resize', () => resizeCanvas(canvas, img));
+}
 
-    container.querySelector('img').style.display = 'none';
-    canvas.addEventListener('dblclick', () => {
-        const dataUrl = canvas.toDataURL();
-        img.src = dataUrl;
-        img.style.display = 'block';
-        canvas.remove();
+function draw(e, ctx, canvas, img) {
+    if (!isDrawing) return;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    [x, y] = [e.offsetX, e.offsetY];
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = '#ff0000';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    currentPath.push({ x, y });
+}
+
+function savePaths(imgSrc, paths) {
+    localStorage.setItem(`drawing-paths-${imgSrc}`, JSON.stringify(paths));
+}
+
+function redrawPaths(ctx, paths, canvas, img) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
+    paths.forEach(path => {
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.strokeStyle = '#ff0000';
+        ctx.lineWidth = 5;
+        ctx.stroke();
     });
+}
+
+function resizeCanvas(canvas, img) {
+    const ctx = canvas.getContext('2d');
+    const savedPaths = JSON.parse(localStorage.getItem(`drawing-paths-${img.src}`)) || [];
+
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (savedPaths.length > 0) {
+        redrawPaths(ctx, savedPaths, canvas, img);
+    }
 }

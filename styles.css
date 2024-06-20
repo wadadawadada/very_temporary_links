@@ -468,6 +468,19 @@ button:hover {
 /*///////////////////////////DRAW/////////////////////////////*/
 .imgContainer {
     position: relative;
+    display: inline-block;
+}
+
+.imgContainer img {
+    display: block;
+}
+
+.imgContainer canvas {
+    position: absolute;
+    /* top: 0;
+    left: 0; */
+    width: 100%;
+    height: auto;
 }
 
 .pencilIcon {
@@ -479,11 +492,13 @@ button:hover {
     color: white;
     padding: 5px;
     border-radius: 50%;
+    z-index: 1;
 }
 
 .pencilIcon:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
 
 /*//////////////////////////////*/
 
