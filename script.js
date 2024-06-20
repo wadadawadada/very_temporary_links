@@ -291,6 +291,10 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('linkForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    const saveButton = document.getElementById('saveButton');
+    saveButton.classList.add('loading');
+    saveButton.disabled = true;
+
     const linkUrl = document.getElementById('linkUrl').value;
 
     fetch(`https://api.microlink.io?url=${linkUrl}`)
@@ -319,6 +323,10 @@ document.getElementById('linkForm').addEventListener('submit', function(e) {
         .catch(error => {
             console.error('Error fetching data:', error);
             alert('Could not fetch data');
+        })
+        .finally(() => {
+            saveButton.classList.remove('loading');
+            saveButton.disabled = false;
         });
 });
 
