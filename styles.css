@@ -877,6 +877,38 @@ button:hover {
     gap: 2rem;
 }
 
+
+.credit-container {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    background: #000000;
+    padding: 10px;
+    border-radius: 10px 0 0 0;
+    z-index: 1000;
+    font-size: 14px;
+}
+
+.credit-container a {
+    color: #00ff3c71;
+    text-decoration: none;
+}
+
+.credit-container a:hover {
+    text-decoration: underline;
+    color: #00ff3c;
+}
+
+
+
+
+
+/*///////////////////////////// MOBILE STYLEES /////////////////////*/
+
+
+
+
+
 @media (max-width: 600px) {
     .body {
         overflow-x: hidden;
