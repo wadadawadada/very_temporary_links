@@ -469,7 +469,7 @@ button:hover {
 /*///////////////////////////DRAW/////////////////////////////*/
 .imgContainer {
     position: relative;
-    display: inline-block;
+    /* display: inline-block; */
     margin-bottom: 15px;
     border-radius: 25px;
 }
@@ -504,15 +504,52 @@ button:hover {
     border-radius: 50%;
     z-index: 1;
     transition: all 0.3s ease-in-out;
-    font-size: 0.7rem;
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
 .pencilIcon:hover {
     background-color: rgba(0, 0, 0, 0.8);
     scale: 1.1;
     transition: all 0.3s ease-in-out;
-
+    
 }
+
+
+.clearIcon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clearIcon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    scale: 1.1;
+    transition: all 0.3s ease-in-out;
+}
+
+.hidden {
+    display: none;
+}
+
 
 
 

@@ -8,6 +8,7 @@ let originalPaths = {};
 function enableDrawing(container) {
     let canvas = container.querySelector('canvas');
     const img = container.querySelector('img');
+    const clearIcon = container.querySelector('.clearIcon'); // Select the clear button
 
     if (!canvas) {
         canvas = document.createElement('canvas');
@@ -25,7 +26,7 @@ function enableDrawing(container) {
 
     if (savedPaths.length > 0) {
         paths[img.src] = savedPaths;
-        originalPaths[img.src] = JSON.parse(JSON.stringify(savedPaths)); // Сохранение оригинальных координат
+        originalPaths[img.src] = JSON.parse(JSON.stringify(savedPaths)); // Save original coordinates
         if (savedDimensions.width !== img.width || savedDimensions.height !== img.height) {
             const scaleX = img.width / savedDimensions.width;
             const scaleY = img.height / savedDimensions.height;
@@ -42,6 +43,11 @@ function enableDrawing(container) {
         }
     }
 
+    // Show the clear button if there are saved paths
+    if (savedPaths.length > 0) {
+        clearIcon.classList.remove('hidden');
+    }
+
     canvas.addEventListener('mousedown', (e) => {
         isDrawing = true;
         const rect = canvas.getBoundingClientRect();
@@ -55,8 +61,9 @@ function enableDrawing(container) {
             isDrawing = false;
             paths[img.src] = paths[img.src] || [];
             paths[img.src].push(currentPath);
-            originalPaths[img.src] = JSON.parse(JSON.stringify(paths[img.src])); // Обновление оригинальных координат
+            originalPaths[img.src] = JSON.parse(JSON.stringify(paths[img.src])); // Update original coordinates
             saveData(img.src, paths[img.src], img.width, img.height);
+            clearIcon.classList.remove('hidden'); // Show clear button when something is drawn
         }
     });
     canvas.addEventListener('mouseout', () => isDrawing = false);
@@ -66,6 +73,14 @@ function enableDrawing(container) {
     }).observe(container);
 
     window.addEventListener('resize', () => resizeCanvas(canvas, img));
+
+    // Clear button functionality
+    clearIcon.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        paths[img.src] = []; // Clear paths data
+        localStorage.removeItem(`drawing-data-${img.src}`); // Remove saved data
+        clearIcon.classList.add('hidden'); // Hide clear button
+    });
 }
 
 function draw(e, ctx, canvas, img) {
@@ -90,7 +105,7 @@ function saveData(imgSrc, paths, width, height) {
 }
 
 function redrawPaths(ctx, paths, canvas, img) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Очистка холста перед перерисовкой
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
     paths.forEach(path => {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
@@ -123,8 +138,6 @@ function resizeCanvas(canvas, img) {
             }))
         );
         redrawPaths(ctx, resizedPaths, canvas, img);
-        paths[img.src] = resizedPaths; // Обновление путей после пересчета координат
+        paths[img.src] = resizedPaths; // Update paths after resizing
     }
 }
-
-

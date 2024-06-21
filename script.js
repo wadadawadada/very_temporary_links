@@ -302,11 +302,15 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
             enableDrawing(imgContainer);
         });
 
+        const clearIcon = document.createElement('div'); // New clear icon
+        clearIcon.className = 'clearIcon hidden';
+        clearIcon.innerHTML = 'X';
         imgContainer.appendChild(pencilIcon);
+        imgContainer.appendChild(clearIcon); // Append clear icon
+
         linkItem.appendChild(imgContainer);
     }
     
-
     const link = document.createElement('a');
     link.href = url;
     link.target = '_blank';
@@ -341,7 +345,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
     });
     linkItem.appendChild(numberContainer);
 
-    // Добавление кнопки комментариев
+    // Adding comment button
     const commentBtn = document.createElement('div');
     commentBtn.className = 'comment-btn';
     commentBtn.textContent = '᳀';
@@ -410,7 +414,7 @@ function removeLink(url) {
     checkLinkItems(); // Check after removing a link
 }
 
-// Обработчик для кнопки комментариев
+// Handler for the comment button
 document.addEventListener('click', function (event) {
     if (event.target.classList.contains('comment-btn')) {
         const url = event.target.getAttribute('data-url');
@@ -419,7 +423,7 @@ document.addEventListener('click', function (event) {
 });
 
 function openCommentBox(url, linkItem) {
-    // Удаляем существующее окно комментариев, если оно есть
+    // Remove existing comment box if it exists
     const existingCommentBox = linkItem.querySelector('.comment-box');
     if (existingCommentBox) {
         existingCommentBox.remove();
@@ -510,26 +514,50 @@ window.onload = () => {
 function enableDrawing(container) {
     let canvas = container.querySelector('canvas');
     const img = container.querySelector('img');
+    const clearIcon = container.querySelector('.clearIcon'); // Select the clear button
 
     if (!canvas) {
         canvas = document.createElement('canvas');
         canvas.style.position = 'absolute';
-        canvas.style.top = img.offsetTop + 'px';
-        canvas.style.left = img.offsetLeft + 'px';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
         container.appendChild(canvas);
         resizeCanvas(canvas, img);
     }
 
     const ctx = canvas.getContext('2d');
-    const savedPaths = JSON.parse(localStorage.getItem(`drawing-paths-${img.src}`)) || [];
+    const savedData = JSON.parse(localStorage.getItem(`drawing-data-${img.src}`)) || {};
+    const savedPaths = savedData.paths || [];
+    const savedDimensions = savedData.dimensions || { width: img.width, height: img.height };
+
     if (savedPaths.length > 0) {
         paths[img.src] = savedPaths;
-        redrawPaths(ctx, savedPaths, canvas, img);
+        originalPaths[img.src] = JSON.parse(JSON.stringify(savedPaths)); // Save original coordinates
+        if (savedDimensions.width !== img.width || savedDimensions.height !== img.height) {
+            const scaleX = img.width / savedDimensions.width;
+            const scaleY = img.height / savedDimensions.height;
+            const resizedPaths = savedPaths.map(path =>
+                path.map(point => ({
+                    x: point.x * scaleX,
+                    y: point.y * scaleY
+                }))
+            );
+            paths[img.src] = resizedPaths;
+            redrawPaths(ctx, resizedPaths, canvas, img);
+        } else {
+            redrawPaths(ctx, savedPaths, canvas, img);
+        }
+    }
+
+    // Show the clear button if there are saved paths
+    if (savedPaths.length > 0) {
+        clearIcon.classList.remove('hidden');
     }
 
     canvas.addEventListener('mousedown', (e) => {
         isDrawing = true;
-        [x, y] = [e.offsetX, e.offsetY];
+        const rect = canvas.getBoundingClientRect();
+        [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
         currentPath = [{ x, y }];
     });
 
@@ -539,19 +567,34 @@ function enableDrawing(container) {
             isDrawing = false;
             paths[img.src] = paths[img.src] || [];
             paths[img.src].push(currentPath);
-            savePaths(img.src, paths[img.src]);
+            originalPaths[img.src] = JSON.parse(JSON.stringify(paths[img.src])); // Update original coordinates
+            saveData(img.src, paths[img.src], img.width, img.height);
+            clearIcon.classList.remove('hidden'); // Show clear button when something is drawn
         }
     });
     canvas.addEventListener('mouseout', () => isDrawing = false);
 
+    new ResizeObserver(() => {
+        resizeCanvas(canvas, img);
+    }).observe(container);
+
     window.addEventListener('resize', () => resizeCanvas(canvas, img));
+
+    // Clear button functionality
+    clearIcon.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        paths[img.src] = []; // Clear paths data
+        localStorage.removeItem(`drawing-data-${img.src}`); // Remove saved data
+        clearIcon.classList.add('hidden'); // Hide clear button
+    });
 }
 
 function draw(e, ctx, canvas, img) {
     if (!isDrawing) return;
     ctx.beginPath();
     ctx.moveTo(x, y);
-    [x, y] = [e.offsetX, e.offsetY];
+    const rect = canvas.getBoundingClientRect();
+    [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
     ctx.lineTo(x, y);
     ctx.strokeStyle = '#ff0000';
     ctx.lineWidth = 5;
@@ -559,8 +602,12 @@ function draw(e, ctx, canvas, img) {
     currentPath.push({ x, y });
 }
 
-function savePaths(imgSrc, paths) {
-    localStorage.setItem(`drawing-paths-${imgSrc}`, JSON.stringify(paths));
+function saveData(imgSrc, paths, width, height) {
+    const data = {
+        paths: paths,
+        dimensions: { width: width, height: height }
+    };
+    localStorage.setItem(`drawing-data-${imgSrc}`, JSON.stringify(data));
 }
 
 function redrawPaths(ctx, paths, canvas, img) {
@@ -579,13 +626,24 @@ function redrawPaths(ctx, paths, canvas, img) {
 
 function resizeCanvas(canvas, img) {
     const ctx = canvas.getContext('2d');
-    const savedPaths = JSON.parse(localStorage.getItem(`drawing-paths-${img.src}`)) || [];
+    const savedData = JSON.parse(localStorage.getItem(`drawing-data-${img.src}`)) || {};
+    const savedPaths = savedData.paths || [];
+    const savedDimensions = savedData.dimensions || { width: img.width, height: img.height };
 
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (savedPaths.length > 0) {
-        redrawPaths(ctx, savedPaths, canvas, img);
+        const scaleX = img.width / savedDimensions.width;
+        const scaleY = img.height / savedDimensions.height;
+        const resizedPaths = savedPaths.map(path =>
+            path.map(point => ({
+                x: point.x * scaleX,
+                y: point.y * scaleY
+            }))
+        );
+        redrawPaths(ctx, resizedPaths, canvas, img);
+        paths[img.src] = resizedPaths; // Update paths after resizing
     }
 }
