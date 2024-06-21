@@ -297,7 +297,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
 
         const pencilIcon = document.createElement('div');
         pencilIcon.className = 'pencilIcon';
-        pencilIcon.innerHTML = '✏️';
+        pencilIcon.innerHTML = '✎';
         pencilIcon.addEventListener('click', function() {
             enableDrawing(imgContainer);
         });
@@ -344,7 +344,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
     // Добавление кнопки комментариев
     const commentBtn = document.createElement('div');
     commentBtn.className = 'comment-btn';
-    commentBtn.textContent = '✉';
+    commentBtn.textContent = '᳀';
     commentBtn.setAttribute('data-url', url);
     if (hasComment) {
         commentBtn.classList.add('has-comment');

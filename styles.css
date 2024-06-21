@@ -504,6 +504,7 @@ button:hover {
     border-radius: 50%;
     z-index: 1;
     transition: all 0.3s ease-in-out;
+    font-size: 0.7rem;
 }
 
 .pencilIcon:hover {
@@ -911,7 +912,7 @@ button:hover {
 
 .credit-container {
     position: fixed;
-    right: 0;
+    right: 5%;
     bottom: 0;
     background: #000000;
     padding: 10px;
