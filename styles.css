@@ -459,6 +459,7 @@ button:hover {
 }
 
 .linkItem img {
+    position: relative;
     width: 100%;
     height: auto;
     margin-bottom: 15px;
@@ -469,18 +470,27 @@ button:hover {
 .imgContainer {
     position: relative;
     display: inline-block;
+    margin-bottom: 15px;
+    border-radius: 25px;
 }
 
 .imgContainer img {
     display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 25px;
 }
 
 .imgContainer canvas {
     position: absolute;
-    /* top: 0;
-    left: 0; */
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    margin: 0;
+    border-radius: 25px;
+    
 }
 
 .pencilIcon {

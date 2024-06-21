@@ -3,6 +3,7 @@ let x = 0;
 let y = 0;
 let currentPath = [];
 let paths = {};
+let originalPaths = {};
 
 function enableDrawing(container) {
     let canvas = container.querySelector('canvas');
@@ -11,22 +12,40 @@ function enableDrawing(container) {
     if (!canvas) {
         canvas = document.createElement('canvas');
         canvas.style.position = 'absolute';
-        canvas.style.top = img.offsetTop + 'px';
-        canvas.style.left = img.offsetLeft + 'px';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
         container.appendChild(canvas);
         resizeCanvas(canvas, img);
     }
 
     const ctx = canvas.getContext('2d');
-    const savedPaths = JSON.parse(localStorage.getItem(`drawing-paths-${img.src}`)) || [];
+    const savedData = JSON.parse(localStorage.getItem(`drawing-data-${img.src}`)) || {};
+    const savedPaths = savedData.paths || [];
+    const savedDimensions = savedData.dimensions || { width: img.width, height: img.height };
+
     if (savedPaths.length > 0) {
         paths[img.src] = savedPaths;
-        redrawPaths(ctx, savedPaths, canvas, img);
+        originalPaths[img.src] = JSON.parse(JSON.stringify(savedPaths)); // Сохранение оригинальных координат
+        if (savedDimensions.width !== img.width || savedDimensions.height !== img.height) {
+            const scaleX = img.width / savedDimensions.width;
+            const scaleY = img.height / savedDimensions.height;
+            const resizedPaths = savedPaths.map(path =>
+                path.map(point => ({
+                    x: point.x * scaleX,
+                    y: point.y * scaleY
+                }))
+            );
+            paths[img.src] = resizedPaths;
+            redrawPaths(ctx, resizedPaths, canvas, img);
+        } else {
+            redrawPaths(ctx, savedPaths, canvas, img);
+        }
     }
 
     canvas.addEventListener('mousedown', (e) => {
         isDrawing = true;
-        [x, y] = [e.offsetX, e.offsetY];
+        const rect = canvas.getBoundingClientRect();
+        [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
         currentPath = [{ x, y }];
     });
 
@@ -36,10 +55,15 @@ function enableDrawing(container) {
             isDrawing = false;
             paths[img.src] = paths[img.src] || [];
             paths[img.src].push(currentPath);
-            savePaths(img.src, paths[img.src]);
+            originalPaths[img.src] = JSON.parse(JSON.stringify(paths[img.src])); // Обновление оригинальных координат
+            saveData(img.src, paths[img.src], img.width, img.height);
         }
     });
     canvas.addEventListener('mouseout', () => isDrawing = false);
+
+    new ResizeObserver(() => {
+        resizeCanvas(canvas, img);
+    }).observe(container);
 
     window.addEventListener('resize', () => resizeCanvas(canvas, img));
 }
@@ -48,7 +72,8 @@ function draw(e, ctx, canvas, img) {
     if (!isDrawing) return;
     ctx.beginPath();
     ctx.moveTo(x, y);
-    [x, y] = [e.offsetX, e.offsetY];
+    const rect = canvas.getBoundingClientRect();
+    [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
     ctx.lineTo(x, y);
     ctx.strokeStyle = '#ff0000';
     ctx.lineWidth = 5;
@@ -56,11 +81,16 @@ function draw(e, ctx, canvas, img) {
     currentPath.push({ x, y });
 }
 
-function savePaths(imgSrc, paths) {
-    localStorage.setItem(`drawing-paths-${imgSrc}`, JSON.stringify(paths));
+function saveData(imgSrc, paths, width, height) {
+    const data = {
+        paths: paths,
+        dimensions: { width: width, height: height }
+    };
+    localStorage.setItem(`drawing-data-${imgSrc}`, JSON.stringify(data));
 }
 
 function redrawPaths(ctx, paths, canvas, img) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Очистка холста перед перерисовкой
     paths.forEach(path => {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
@@ -74,20 +104,25 @@ function redrawPaths(ctx, paths, canvas, img) {
 }
 
 function resizeCanvas(canvas, img) {
-    const ratio = img.width / canvas.width;
     const ctx = canvas.getContext('2d');
-    const paths = JSON.parse(localStorage.getItem(`drawing-paths-${img.src}`)) || [];
-    
+    const savedData = JSON.parse(localStorage.getItem(`drawing-data-${img.src}`)) || {};
+    const savedPaths = savedData.paths || [];
+    const savedDimensions = savedData.dimensions || { width: img.width, height: img.height };
+
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    paths.forEach(path => {
-        path.forEach(point => {
-            point.x *= ratio;
-            point.y *= ratio;
-        });
-    });
-
-    redrawPaths(ctx, paths, canvas, img);
+    if (savedPaths.length > 0) {
+        const scaleX = img.width / savedDimensions.width;
+        const scaleY = img.height / savedDimensions.height;
+        const resizedPaths = savedPaths.map(path =>
+            path.map(point => ({
+                x: point.x * scaleX,
+                y: point.y * scaleY
+            }))
+        );
+        redrawPaths(ctx, resizedPaths, canvas, img);
+        paths[img.src] = resizedPaths; // Обновление путей после пересчета координат
+    }
 }
