@@ -126,3 +126,5 @@ function resizeCanvas(canvas, img) {
         paths[img.src] = resizedPaths; // Обновление путей после пересчета координат
     }
 }
+
+

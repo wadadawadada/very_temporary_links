@@ -503,11 +503,17 @@ button:hover {
     padding: 5px;
     border-radius: 50%;
     z-index: 1;
+    transition: all 0.3s ease-in-out;
 }
 
 .pencilIcon:hover {
     background-color: rgba(0, 0, 0, 0.8);
+    scale: 1.1;
+    transition: all 0.3s ease-in-out;
+
 }
+
+
 
 
 /*//////////////////////////////*/

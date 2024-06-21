@@ -305,6 +305,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
         imgContainer.appendChild(pencilIcon);
         linkItem.appendChild(imgContainer);
     }
+    
 
     const link = document.createElement('a');
     link.href = url;
