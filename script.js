@@ -304,7 +304,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
 
         const clearIcon = document.createElement('div'); // New clear icon
         clearIcon.className = 'clearIcon hidden';
-        clearIcon.innerHTML = 'X';
+        clearIcon.innerHTML = '⦾';
         imgContainer.appendChild(pencilIcon);
         imgContainer.appendChild(clearIcon); // Append clear icon
 

@@ -479,7 +479,7 @@ button:hover {
     width: 100%;
     height: auto;
     margin-bottom: 15px;
-    border-radius: 25px;
+    border-radius: 15px;
 }
 
 .imgContainer canvas {
@@ -541,7 +541,7 @@ button:hover {
 }
 
 .clearIcon:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgb(255, 0, 0);
     scale: 1.1;
     transition: all 0.3s ease-in-out;
 }
