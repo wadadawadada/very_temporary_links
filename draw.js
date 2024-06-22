@@ -5,6 +5,72 @@ let currentPath = [];
 let paths = {};
 let originalPaths = {};
 
+const pinataApiKey = '9b2c19fe686b4a404823';
+const pinataSecretApiKey = '8e44607ecd28a80789d38d79b99a8c4f6169b1d1d46a3dc2662dc3adfd982015';
+
+// Function to upload image to Pinata
+async function uploadToPinata(imageBlob) {
+    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+    let data = new FormData();
+    data.append('file', imageBlob);
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${pinataApiKey}:${pinataSecretApiKey}`,
+        },
+        body: data
+    });
+
+    if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Pinata upload failed: ${errorMessage}`);
+    }
+
+    return response.json();
+}
+
+// Function to combine image and drawings into one canvas and get Blob
+function getCanvasWithDrawings(img, paths) {
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+
+        // Create a new image element with crossOrigin attribute set
+        const imgWithCrossOrigin = new Image();
+        imgWithCrossOrigin.crossOrigin = 'Anonymous';
+        imgWithCrossOrigin.src = img.src;
+
+        imgWithCrossOrigin.onload = () => {
+            ctx.drawImage(imgWithCrossOrigin, 0, 0);
+            paths.forEach(path => {
+                ctx.beginPath();
+                ctx.moveTo(path[0].x, path[0].y);
+                path.forEach(point => {
+                    ctx.lineTo(point.x, point.y);
+                });
+                ctx.strokeStyle = '#ff0000';
+                ctx.lineWidth = 5;
+                ctx.stroke();
+            });
+
+            canvas.toBlob(blob => {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('Canvas toBlob conversion failed.'));
+                }
+            }, 'image/png');
+        };
+
+        imgWithCrossOrigin.onerror = (err) => {
+            reject(new Error('Image loading failed: ' + err.message));
+        };
+    });
+}
+
 function enableDrawing(container) {
     let canvas = container.querySelector('canvas');
     const img = container.querySelector('img');
