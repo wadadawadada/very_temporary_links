@@ -85,7 +85,7 @@ button {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     border-radius: 25px;
-    width: 80%;
+    width: 75%;
     border-color: #0dff00;
     border-width: 1px;
     border-style: solid;
@@ -252,8 +252,9 @@ button:hover {
 }
 
 #connectWalletBtn {
-    visibility: hidden;
-    display: none;
+    /* border-color: #d400ff; */
+    /* visibility: hidden;
+    display: none; */
 }
 
 .titleContainer {
