@@ -1143,6 +1143,11 @@ button:hover {
         width: 100%;
     }
 
+    .pencilIcon {
+        visibility: hidden;
+
+    }
+
     #generatedLinkContainer {
         flex-direction: row;
         align-items: flex-start;
