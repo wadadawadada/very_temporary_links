@@ -243,7 +243,7 @@ function createLinkItem(title, description, url, imageUrl, isActive = false, com
 
     const commentBtn = document.createElement('div');
     commentBtn.className = 'comment-btn';
-    commentBtn.textContent = '᳀';
+    commentBtn.textContent = '🗎';
     commentBtn.setAttribute('data-url', url);
     if (hasComment) {
         commentBtn.classList.add('has-comment');
