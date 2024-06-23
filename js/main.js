@@ -25,34 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const handler = async () => {
             shareBtn.removeEventListener('animationend', handler);
-            const currentLinks = JSON.parse(localStorage.getItem('links')) || [];
-            const linksParam = encodeURIComponent(JSON.stringify(currentLinks));
-            const longUrl = `${window.location.origin}${window.location.pathname}?links=${linksParam}`;
-            const response = await fetch(`https://api.tinyurl.com/create?api_token=9XhspWrHEHf7ieo1IlDpHEnjOAieV09pD5icaG6WWxuaolrsEEywKab0qL0n`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    url: longUrl,
-                    domain: "tinyurl.com"
-                })
-            });
-            const data = await response.json();
-            if (data.data) {
-                const shortUrl = data.data.tiny_url;
+            const shareUrl = await shareState();
+            if (shareUrl) {
                 if (isMobile) {
                     const generatedLinkContainer = document.getElementById('generatedLinkContainer');
                     const generatedLinkInput = document.getElementById('generatedLink');
-                    generatedLinkInput.value = shortUrl;
+                    generatedLinkInput.value = shareUrl;
                     generatedLinkContainer.classList.remove('hidden');
                 } else {
-                    await navigator.clipboard.writeText(shortUrl);
+                    await navigator.clipboard.writeText(shareUrl);
                     shareBtn.innerHTML = 'Copied!';
                     setTimeout(() => {
                         shareBtn.innerHTML = originalContent;
                     }, 2000);
                 }
+            } else {
+                alert('Failed to generate share link. Please try again.');
             }
             shareBtn.classList.remove('animated');
         };
@@ -297,18 +285,49 @@ function loadLinks() {
     });
 }
 
-function loadLinksFromUrl() {
+async function loadLinksFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
-    const linksParam = urlParams.get('links');
-    if (linksParam) {
-        const links = JSON.parse(decodeURIComponent(linksParam));
-        links.forEach(link => {
-            if (link.comment) {
-                localStorage.setItem(`comment-${link.url}`, link.comment);
-            }
-        });
-        localStorage.setItem('links', JSON.stringify(links));
-        loadLinks();
+    const stateParam = urlParams.get('state');
+    if (stateParam) {
+        const pinataApiKey = '9b2c19fe686b4a404823';
+        const pinataSecretApiKey = '8e44607ecd28a80789d38d79b99a8c4f6169b1d1d46a3dc2662dc3adfd982015';
+
+        const contentUrl = `https://gateway.pinata.cloud/ipfs/${stateParam}`;
+        try {
+            const response = await fetch(contentUrl);
+            const content = await response.json();
+
+            localStorage.setItem('links', JSON.stringify(content.links));
+            localStorage.setItem('currentTitle', content.title);
+            localStorage.setItem('savedPages', JSON.stringify(content.savedPages));
+
+            Object.keys(content.drawings).forEach(imgSrc => {
+                localStorage.setItem(`drawing-data-${imgSrc}`, JSON.stringify(content.drawings[imgSrc]));
+            });
+
+            Object.keys(content.comments).forEach(url => {
+                localStorage.setItem(`comment-${url}`, content.comments[url]);
+            });
+
+            loadLinks();
+            document.getElementById('pageTitle').value = content.title;
+            loadSavedPages();
+            console.log('State loaded from Pinata:', content);
+        } catch (error) {
+            console.error('Error loading state from Pinata:', error);
+        }
+    } else {
+        const linksParam = urlParams.get('links');
+        if (linksParam) {
+            const links = JSON.parse(decodeURIComponent(linksParam));
+            links.forEach(link => {
+                if (link.comment) {
+                    localStorage.setItem(`comment-${link.url}`, link.comment);
+                }
+            });
+            localStorage.setItem('links', JSON.stringify(links));
+            loadLinks();
+        }
     }
 }
 
@@ -411,7 +430,7 @@ window.onload = () => {
     setInterval(resetAnimation, 18000);
 };
 
-async function saveStateOnline(walletAddress) {
+async function shareState() {
     const pinataApiKey = '9b2c19fe686b4a404823';
     const pinataSecretApiKey = '8e44607ecd28a80789d38d79b99a8c4f6169b1d1d46a3dc2662dc3adfd982015';
     const currentState = {
@@ -419,7 +438,7 @@ async function saveStateOnline(walletAddress) {
         title: localStorage.getItem('currentTitle') || '',
         drawings: {},
         savedPages: JSON.parse(localStorage.getItem('savedPages')) || [],
-        comments: {} // Store comments
+        comments: {}
     };
 
     document.querySelectorAll('.imgContainer img').forEach(img => {
@@ -440,7 +459,7 @@ async function saveStateOnline(walletAddress) {
     const json = JSON.stringify(currentState);
 
     const formData = new FormData();
-    formData.append('file', new Blob([json], { type: 'application/json' }), `${walletAddress}.json`);
+    formData.append('file', new Blob([json], { type: 'application/json' }), `state.json`);
 
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     const headers = {
@@ -449,87 +468,21 @@ async function saveStateOnline(walletAddress) {
     };
 
     try {
-        const saveButton = document.getElementById('saveOnlineBtn');
-        const originalText = saveButton.textContent;
-        saveButton.textContent = 'Saving...';
-        saveButton.disabled = true;
-
         const response = await fetch(url, {
             method: 'POST',
             headers: headers,
             body: formData
         });
         const data = await response.json();
-        console.log('State saved to Pinata:', data);
-
-        saveButton.textContent = 'Saved!';
-        setTimeout(() => {
-            saveButton.textContent = originalText;
-            saveButton.disabled = false;
-        }, 2000);
-    } catch (error) {
-        console.error('Error saving state to Pinata:', error);
-    }
-}
-
-async function loadStateOnline(walletAddress) {
-    const pinataApiKey = '9b2c19fe686b4a404823';
-    const pinataSecretApiKey = '8e44607ecd28a80789d38d79b99a8c4f6169b1d1d46a3dc2662dc3adfd982015';
-
-    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[name]=${walletAddress}.json`;
-
-    try {
-        const loadButton = document.getElementById('loadOnlineBtn');
-        const originalText = loadButton.textContent;
-        loadButton.textContent = 'Loading...';
-        loadButton.disabled = true;
-
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'pinata_api_key': pinataApiKey,
-                'pinata_secret_api_key': pinataSecretApiKey
-            }
-        });
-        const data = await response.json();
-
-        if (data.rows.length > 0) {
-            const hash = data.rows[0].ipfs_pin_hash;
-            const contentUrl = `https://gateway.pinata.cloud/ipfs/${hash}`;
-            const contentResponse = await fetch(contentUrl);
-            const content = await contentResponse.json();
-
-            localStorage.setItem('links', JSON.stringify(content.links));
-            localStorage.setItem('currentTitle', content.title);
-            localStorage.setItem('savedPages', JSON.stringify(content.savedPages));
-
-            Object.keys(content.drawings).forEach(imgSrc => {
-                localStorage.setItem(`drawing-data-${imgSrc}`, JSON.stringify(content.drawings[imgSrc]));
-            });
-
-            Object.keys(content.comments).forEach(url => {
-                localStorage.setItem(`comment-${url}`, content.comments[url]);
-            });
-
-            loadLinks();
-            document.getElementById('pageTitle').value = content.title;
-            loadSavedPages();
-            console.log('State loaded from Pinata:', content);
-
-            loadButton.textContent = 'Loaded!';
-            setTimeout(() => {
-                loadButton.textContent = originalText;
-                loadButton.disabled = false;
-            }, 2000);
+        if (data.IpfsHash) {
+            const shareUrl = `${window.location.origin}${window.location.pathname}?state=${data.IpfsHash}`;
+            return shareUrl;
         } else {
-            console.log('No state found for this wallet address.');
-            loadButton.textContent = originalText;
-            loadButton.disabled = false;
+            throw new Error('Failed to save state to Pinata');
         }
     } catch (error) {
-        console.error('Error loading state from Pinata:', error);
-        loadButton.textContent = originalText;
-        loadButton.disabled = false;
+        console.error('Error saving state to Pinata:', error);
+        return null;
     }
 }
 

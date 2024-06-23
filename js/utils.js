@@ -6,7 +6,7 @@ async function saveStateOnline(walletAddress) {
         title: localStorage.getItem('currentTitle') || '',
         drawings: {},
         savedPages: JSON.parse(localStorage.getItem('savedPages')) || [],
-        comments: {} // Store comments
+        comments: {}
     };
 
     document.querySelectorAll('.imgContainer img').forEach(img => {
