@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('connectWalletBtn').classList.add('connected');
                 toggleOnlineButtons(true);  // Show buttons when wallet is connected
 
-                const shortWalletAddress = `${walletAddress.slice(0, 5)}...${walletAddress.slice(-3)}`;
+                const shortWalletAddress = `⟠ ${walletAddress.slice(0, 3)}...${walletAddress.slice(-2)}`;
                 document.getElementById('walletAddress').textContent = shortWalletAddress;
 
                 document.getElementById('saveOnlineBtn').addEventListener('click', () => saveStateOnline(walletAddress));
