@@ -12,8 +12,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
-    <script src="bg.js"></script>
-    <script src="draw.js" defer></script>
+    <script src="/js/bg.js"></script>
+    <script src="/js/drawing.js" defer></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/utils.js" defer></script>
 </head>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5S03YN610S"></script>
@@ -60,12 +62,16 @@
             </svg>
         </button>
         </div>
+        <div id="onlineButtonsContainer" class="hidden">
+            <button type="button" id="saveOnlineBtn" class="hidden">Save ↥</button>
+            <button type="button" id="loadOnlineBtn" class="hidden">Load ↧</button>
+        </div>
+        
     </form>
 
     <div class="container">
-        <div class="titleContainer">
-            <div class="saveLinksTitle">🔗 Very Temporary Links</div>
-            <div class="infoInfo">ⓘ
+         <div class="titleContainer" id="titleContainer">
+            <div class="saveLinksTitle">🔗 Very Temporary Links<div class="infoInfo">ⓘ
                 <div class="tooltip">
                     <h2>This service was designed to simplify the process for individuals who frequently use and share numerous links:</h2><br><br><br>
                     1. You can efficiently gather references and share them with friends, team members, or save them for later use!<br><br>
@@ -74,7 +80,8 @@
                     4. ????<br><br>
                     5. PROFIT!!!!101010101010<br><br>
                 </div>
-            </div>
+            </div></div>
+            
         </div>
         
         <div class="titleInputContainer hidden" id="titleInputContainer">
@@ -89,6 +96,6 @@
         <a href="https://numen.space" target="_blank">created by numen</a>
     </div>
 
-    <script src="script.js"></script>
+    <div id="walletAddress" style="position: absolute; top: 10px; right: 10px; color: #00ff3c;"></div>
 </body>
 </html>

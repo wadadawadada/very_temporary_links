@@ -8,7 +8,7 @@ let originalPaths = {};
 function enableDrawing(container) {
     let canvas = container.querySelector('canvas');
     const img = container.querySelector('img');
-    const clearIcon = container.querySelector('.clearIcon'); // Select the clear button
+    const clearIcon = container.querySelector('.clearIcon');
 
     if (!canvas) {
         canvas = document.createElement('canvas');
@@ -26,7 +26,7 @@ function enableDrawing(container) {
 
     if (savedPaths.length > 0) {
         paths[img.src] = savedPaths;
-        originalPaths[img.src] = JSON.parse(JSON.stringify(savedPaths)); // Save original coordinates
+        originalPaths[img.src] = JSON.parse(JSON.stringify(savedPaths));
         if (savedDimensions.width !== img.width || savedDimensions.height !== img.height) {
             const scaleX = img.width / savedDimensions.width;
             const scaleY = img.height / savedDimensions.height;
@@ -43,7 +43,6 @@ function enableDrawing(container) {
         }
     }
 
-    // Show the clear button if there are saved paths
     if (savedPaths.length > 0) {
         clearIcon.classList.remove('hidden');
     }
@@ -61,9 +60,9 @@ function enableDrawing(container) {
             isDrawing = false;
             paths[img.src] = paths[img.src] || [];
             paths[img.src].push(currentPath);
-            originalPaths[img.src] = JSON.parse(JSON.stringify(paths[img.src])); // Update original coordinates
+            originalPaths[img.src] = JSON.parse(JSON.stringify(paths[img.src]));
             saveData(img.src, paths[img.src], img.width, img.height);
-            clearIcon.classList.remove('hidden'); // Show clear button when something is drawn
+            clearIcon.classList.remove('hidden');
         }
     });
     canvas.addEventListener('mouseout', () => isDrawing = false);
@@ -74,12 +73,11 @@ function enableDrawing(container) {
 
     window.addEventListener('resize', () => resizeCanvas(canvas, img));
 
-    // Clear button functionality
     clearIcon.addEventListener('click', () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-        paths[img.src] = []; // Clear paths data
-        localStorage.removeItem(`drawing-data-${img.src}`); // Remove saved data
-        clearIcon.classList.add('hidden'); // Hide clear button
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        paths[img.src] = [];
+        localStorage.removeItem(`drawing-data-${img.src}`);
+        clearIcon.classList.add('hidden');
     });
 }
 
@@ -99,13 +97,13 @@ function draw(e, ctx, canvas, img) {
 function saveData(imgSrc, paths, width, height) {
     const data = {
         paths: paths,
-        dimensions: { width: width, height: height }
+        dimensions: { width, height }
     };
     localStorage.setItem(`drawing-data-${imgSrc}`, JSON.stringify(data));
 }
 
 function redrawPaths(ctx, paths, canvas, img) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     paths.forEach(path => {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
@@ -138,6 +136,6 @@ function resizeCanvas(canvas, img) {
             }))
         );
         redrawPaths(ctx, resizedPaths, canvas, img);
-        paths[img.src] = resizedPaths; // Update paths after resizing
+        paths[img.src] = resizedPaths;
     }
 }
