@@ -34,7 +34,7 @@
         <div class="buttonMenu" id="buttonMenu">
             <button type="submit" id="saveButton">Add</button>
             <button type="button" id="shareBtn">Share</button>
-            <button type="button" id="toggleDirectionBtn">
+            <button type="button" id="toggleDirectionBtn" title="Toggle view">
                 <script src="https://cdn.lordicon.com/lordicon.js"></script>
                 <lord-icon
                     src="https://cdn.lordicon.com/vfczflna.json"
@@ -43,8 +43,8 @@
                     colors="primary:#00ff3c,secondary:#00ff3c"
                     style="width:100%;height:150%;top:-25%;"></lord-icon>
             </button>
-            <button type="button" id="myLinksBtn">+</button>
-            <button type="button" id="connectWalletBtn">
+            <button type="button" id="myLinksBtn" title="Create folder">+</button>
+            <button type="button" id="connectWalletBtn" title="Connect MetaMask">
                 <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <lord-icon
     src="https://cdn.lordicon.com/ciawvzjk.json"
@@ -63,8 +63,8 @@
         </button>
         </div>
         <div id="onlineButtonsContainer" class="hidden">
-            <button type="button" id="saveOnlineBtn" class="hidden">Save ↥</button>
-            <button type="button" id="loadOnlineBtn" class="hidden">Load ↧</button>
+            <button type="button" id="saveOnlineBtn" class="hidden" title="Save to IPFS">Save ↥</button>
+            <button type="button" id="loadOnlineBtn" class="hidden" title="Load from IPFS">Load ↧</button>
         </div>
         
     </form>
@@ -96,6 +96,6 @@
         <a href="https://numen.space" target="_blank">created by numen</a>
     </div>
 
-    <div id="walletAddress" style="position: absolute; top: 10px; right: 10px; color: #00ff3c;"></div>
+    <div id="walletAddress"></div>
 </body>
 </html>
