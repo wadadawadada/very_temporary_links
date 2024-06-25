@@ -17,16 +17,6 @@
     <script src="/js/main.js" defer></script>
     <script src="/js/utils.js" defer></script>
 </head>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5S03YN610S"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5S03YN610S');
-</script>
-
 <body>
     <canvas class="screen"></canvas>
     <form id="linkForm">
@@ -46,12 +36,12 @@
             <button type="button" id="myLinksBtn" title="Save state as folder">+</button>
             <button type="button" id="connectWalletBtn" title="Connect MetaMask">
                 <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <lord-icon
-    src="https://cdn.lordicon.com/ciawvzjk.json"
-    trigger="hover"
-    colors="primary:#00fc11"
-    style="width:100%;height:150%;top:-25%;">
-    </lord-icon>
+                <lord-icon
+                src="https://cdn.lordicon.com/ciawvzjk.json"
+                trigger="hover"
+                colors="primary:#00fc11"
+                style="width:100%;height:150%;top:-25%;">
+                </lord-icon>
             </button>
         </div>
         <div id="generatedLinkContainer" class="hidden">
@@ -97,5 +87,15 @@
     </div>
 
     <div id="walletAddress"></div>
+
+    <div id="chatButtonContainer">
+        <button id="chatButton">💬</button>
+    </div>
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <iframe id="chatIframe" src="" frameborder="0" style="width: 100%; height: 90vh;"></iframe>
+        </div>
+    </div>
 </body>
 </html>
