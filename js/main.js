@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    await initializeChatLink();
     loadLinksFromUrl();
     loadLinks();
     checkLinkItems();
