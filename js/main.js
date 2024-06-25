@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    await initializeChatLink();
+document.addEventListener('DOMContentLoaded', () => {
     loadLinksFromUrl();
     loadLinks();
     checkLinkItems();
@@ -141,28 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     toggleOnlineButtons(false);  // Hide buttons on page load
-
-    // Chat button and modal functionality
-    const chatButton = document.getElementById('chatButton');
-    const chatModal = document.getElementById('chatModal');
-    const closeModal = document.getElementsByClassName('close')[0];
-
-    chatButton.onclick = function() {
-        chatModal.style.display = 'block';
-        loadChatLink();
-    }
-
-    closeModal.onclick = function() {
-        chatModal.style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        if (event.target == chatModal) {
-            chatModal.style.display = 'none';
-        }
-    }
-
-    await initializeChatLink();
 });
 
 document.getElementById('linkForm').addEventListener('submit', function(e) {
@@ -323,7 +300,6 @@ async function loadLinksFromUrl() {
             localStorage.setItem('links', JSON.stringify(content.links));
             localStorage.setItem('currentTitle', content.title);
             localStorage.setItem('savedPages', JSON.stringify(content.savedPages));
-            localStorage.setItem('chatLink', content.chatLink);
 
             Object.keys(content.drawings).forEach(imgSrc => {
                 localStorage.setItem(`drawing-data-${imgSrc}`, JSON.stringify(content.drawings[imgSrc]));
@@ -336,7 +312,6 @@ async function loadLinksFromUrl() {
             loadLinks();
             document.getElementById('pageTitle').value = content.title;
             loadSavedPages();
-            loadChatLink();
             console.log('State loaded from Pinata:', content);
         } catch (error) {
             console.error('Error loading state from Pinata:', error);
@@ -463,8 +438,7 @@ async function shareState() {
         title: localStorage.getItem('currentTitle') || '',
         drawings: {},
         savedPages: JSON.parse(localStorage.getItem('savedPages')) || [],
-        comments: {},
-        chatLink: localStorage.getItem('chatLink') || ''
+        comments: {}
     };
 
     document.querySelectorAll('.imgContainer img').forEach(img => {
@@ -599,31 +573,4 @@ function toggleOnlineButtons(show) {
         saveOnlineBtn.classList.add('hidden');
         loadOnlineBtn.classList.add('hidden');
     }
-}
-
-async function initializeChatLink() {
-    let chatLink = localStorage.getItem('chatLink');
-    if (!chatLink) {
-        chatLink = await fetchNewChatLink();
-        localStorage.setItem('chatLink', chatLink);
-    }
-    const chatIframe = document.getElementById('chatIframe');
-    chatIframe.src = chatLink;
-}
-
-async function fetchNewChatLink() {
-    try {
-        const response = await fetch('https://m00nchat.netlify.app');
-        const url = response.url;
-        return url;
-    } catch (error) {
-        console.error('Failed to fetch new chat link:', error);
-        return '';
-    }
-}
-
-function loadChatLink() {
-    const chatLink = localStorage.getItem('chatLink');
-    const chatIframe = document.getElementById('chatIframe');
-    chatIframe.src = chatLink;
 }
