@@ -140,6 +140,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     toggleOnlineButtons(false);  // Hide buttons on page load
+
+    // Chat button and modal functionality
+    const chatButton = document.getElementById('chatButton');
+    const chatModal = document.getElementById('chatModal');
+    const closeChatModal = document.getElementById('closeChatModal');
+
+    chatButton.addEventListener('click', () => {
+        chatModal.classList.remove('hidden');
+    });
+
+    closeChatModal.addEventListener('click', () => {
+        chatModal.classList.add('hidden');
+    });
+
+    // Close the modal when clicking outside the chat content
+    window.addEventListener('click', (event) => {
+        if (event.target === chatModal) {
+            chatModal.classList.add('hidden');
+        }
+    });
 });
 
 document.getElementById('linkForm').addEventListener('submit', function(e) {
