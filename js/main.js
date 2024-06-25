@@ -604,16 +604,22 @@ function toggleOnlineButtons(show) {
 async function initializeChatLink() {
     let chatLink = localStorage.getItem('chatLink');
     if (!chatLink) {
-        try {
-            const response = await fetch('https://m00nchat.netlify.app');
-            chatLink = response.url;
-            localStorage.setItem('chatLink', chatLink);
-        } catch (error) {
-            console.error('Failed to fetch chat link:', error);
-        }
+        chatLink = await fetchNewChatLink();
+        localStorage.setItem('chatLink', chatLink);
     }
     const chatIframe = document.getElementById('chatIframe');
     chatIframe.src = chatLink;
+}
+
+async function fetchNewChatLink() {
+    try {
+        const response = await fetch('https://m00nchat.netlify.app');
+        const url = response.url;
+        return url;
+    } catch (error) {
+        console.error('Failed to fetch new chat link:', error);
+        return '';
+    }
 }
 
 function loadChatLink() {
