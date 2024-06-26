@@ -1013,7 +1013,7 @@ button:hover {
 
 .credit-container {
     position: fixed;
-    right: 5%;
+    left: 5%;
     bottom: 0;
     background: #000000;
     padding: 10px;
@@ -1036,7 +1036,7 @@ button:hover {
 
 .chat-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 0px;
     right: 20px;
     background-color: #00ff3c00;
     color: #000000;
