@@ -1013,7 +1013,7 @@ button:hover {
 
 .credit-container {
     position: fixed;
-    left: 5%;
+    left: 20px;
     bottom: 0;
     background: #000000;
     padding: 10px;

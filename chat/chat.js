@@ -29,13 +29,15 @@ const getMoonPhase = () => {
 
 document.getElementById('moonPhase').textContent = getMoonPhase();
 
-copyLinkButton.addEventListener('click', () => {
+copyLinkButton.addEventListener('click', async () => {
     const link = chatLinkContainer.textContent;
-    navigator.clipboard.writeText(link).then(() => {
+    try {
+        await navigator.clipboard.writeText(link);
         alert('Link copied to clipboard!');
-    }).catch(err => {
+    } catch (err) {
         console.error('Error copying link: ', err);
-    });
+        alert('Failed to copy the link. Please try again.');
+    }
 });
 
 const renderMessages = () => {

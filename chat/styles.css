@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     color: #ffffff;
-    background: #000000;
+    background: #b7202000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,19 +16,29 @@ body {
 }
 
 #container {
-    width: 500px;
+    width: 300px;
     text-align: center;
+    border-color: #13770f;
+    border-style: solid;
+    border-width: 1px;
+    padding: 2rem;
+    padding-right: 3rem;
+    padding-top: 4rem;
+    border-radius: 25px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    background-color: #00000093;
 }
 
 #moonPhase {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-left: -.25rem;
     margin-right: -.25rem;
 }
 
 #title {
-    font-size: 4rem;
-    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
     font-family: "Righteous", sans-serif;
     display: flex;
     justify-content: center;
@@ -87,20 +97,22 @@ body {
 #nicknameInput {
     width: 30%;
     padding-left: 10px;
-    border: 1px solid #ffffff;
+    border: 1px solid #ffffff88;
     background-color: #000000;
     height: 1.5rem;
     border-radius: 7px;
     color: #00ff3c;
+    font-size: 0.7rem;
 }
 
 #usersOnline {
-    width: 30%;
+    width: 20%;
     text-align: right;
+    font-size: 12px;
 }
 
 #status {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 #connectionStatus {
@@ -127,14 +139,14 @@ body {
 
 #chat {
     width: 100%;
-    height: 350px;
+    height: 200px;
     border: 1px solid #585858;
     border-radius: 7px;
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #000000c8;
+    background-color: #000000;
     color: #ffffff;
     text-align: left;
     line-height: 1.5rem;
@@ -163,8 +175,8 @@ body {
 #messageInput {
     width: 100%;
     height: auto;
-    min-height: 4rem;
-    max-height: 4rem;
+    min-height: 2rem;
+    max-height: 2rem;
     border: 1px solid #00fc11;
     border-radius: 10px;
     background-color: #000000;
@@ -194,7 +206,8 @@ body {
 #linkContainer {
     margin-top: 2rem;
     display: flex;
-    height: 1.5rem;
+    height: 1rem;
+    font-size: 0.8rem;
 }
 
 #chatLink {
@@ -208,18 +221,18 @@ body {
 
 #copyLinkButton {
     margin-left: 10px;
-    padding: 5px;
     background-color: #00ff3c00;
     color: #ffffff;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     border-radius: 10px;
-    border: 1px solid #ffffff;
+    font-size: 1.5rem;
+    margin-top: -0.75rem;
 }
 
 #copyLinkButton:hover {
     background-color: #000000;
     color: #2fff00;
-    border: 1px solid #0dff00;
+    /* border: 1px solid #0dff00; */
 }
