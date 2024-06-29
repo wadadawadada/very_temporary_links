@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatIframeContainer = document.getElementById('chatIframeContainer');
 
     const currentUrl = window.location.href;
-    if (currentUrl === "http://127.0.0.1:5500/") {
+    if (currentUrl === "https://0link.click/") {
         chatButton.classList.add('hidden');
     } else {
         chatButton.classList.remove('hidden');
