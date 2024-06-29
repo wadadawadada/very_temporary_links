@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chatIframeContainer.innerHTML = `<iframe src="${chatUrl}" class="chat-modal-main"></iframe>`;
             chatModal.classList.remove('hidden');
         } else {
-            alert('No state hash found in the URL.');
+            alert('Share your state first, please.');
         }
     });
 
