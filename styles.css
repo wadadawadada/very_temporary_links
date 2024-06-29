@@ -1054,6 +1054,17 @@ button:hover {
    scale: 1.1;
 }
 
+@keyframes flash-blue {
+    0% { background-color: blue; }
+    50% { background-color: white; }
+    100% { background-color: blue; }
+}
+
+.flash-blue {
+    animation: flash-blue 1s infinite;
+}
+
+
 
 .chat-modal-main {
     width:100%; 
