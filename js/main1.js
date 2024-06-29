@@ -27,23 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
             shareBtn.removeEventListener('animationend', handler);
             const shareUrl = await shareState();
             if (shareUrl) {
-                if (isMobile) {
-                    const generatedLinkContainer = document.getElementById('generatedLinkContainer');
-                    const generatedLinkInput = document.getElementById('generatedLink');
-                    generatedLinkInput.value = shareUrl;
-                    generatedLinkContainer.classList.remove('hidden');
-                } else {
-                    try {
-                        await navigator.clipboard.writeText(shareUrl);
-                        shareBtn.innerHTML = 'Copied!';
-                    } catch (err) {
-                        console.error('Failed to copy: ', err);
-                        alert('Failed to copy the link. Please try again.');
-                    } finally {
-                        setTimeout(() => {
-                            shareBtn.innerHTML = originalContent;
-                        }, 2000);
-                    }
+                try {
+                    await navigator.clipboard.writeText(shareUrl);
+                    shareBtn.innerHTML = 'Copied!';
+                    setTimeout(() => {
+                        window.location.href = shareUrl; // Redirect after 2 seconds
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy the link. Redirecting anyway...');
+                    setTimeout(() => {
+                        window.location.href = shareUrl; // Redirect after 2 seconds
+                    }, 2000);
                 }
             } else {
                 alert('Failed to generate share link. Please try again.');
@@ -156,6 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatModal = document.getElementById('chatModal');
     const closeChatModal = document.getElementById('closeChatModal');
     const chatIframeContainer = document.getElementById('chatIframeContainer');
+
+    const currentUrl = window.location.href;
+    if (currentUrl === "http://127.0.0.1:5500/") {
+        chatButton.classList.add('hidden');
+    } else {
+        chatButton.classList.remove('hidden');
+    }
 
     chatButton.addEventListener('click', async () => {
         const hash = getUrlParameter('state');

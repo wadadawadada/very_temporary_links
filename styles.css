@@ -1061,9 +1061,9 @@ button:hover {
     /* right: 2rem;
     left: 2rem;  */
     border:none; 
-    background-color: #00000000;
+    /* background-color: #ff0000; */
     border-radius: 25px;
-    box-shadow: 0 0 25px 15px #000000;
+    /* box-shadow: 0 0 25px 15px #000000; */
     margin-bottom: 35rem;
     
 }
@@ -1073,8 +1073,8 @@ button:hover {
     bottom: 10%;
     right: 40px;
     position: fixed;
-    width: 20%;
-    height: 62%;
+    width: 18%;
+    height: 58%;
     background-color: rgba(148, 8, 8, 0);
     display: absolute;
     justify-content: center;
