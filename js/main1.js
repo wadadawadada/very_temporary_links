@@ -33,11 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     generatedLinkInput.value = shareUrl;
                     generatedLinkContainer.classList.remove('hidden');
                 } else {
-                    await navigator.clipboard.writeText(shareUrl);
-                    shareBtn.innerHTML = 'Copied!';
-                    setTimeout(() => {
-                        shareBtn.innerHTML = originalContent;
-                    }, 2000);
+                    try {
+                        await navigator.clipboard.writeText(shareUrl);
+                        shareBtn.innerHTML = 'Copied!';
+                    } catch (err) {
+                        console.error('Failed to copy: ', err);
+                        alert('Failed to copy the link. Please try again.');
+                    } finally {
+                        setTimeout(() => {
+                            shareBtn.innerHTML = originalContent;
+                        }, 2000);
+                    }
                 }
             } else {
                 alert('Failed to generate share link. Please try again.');
@@ -48,17 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
         shareBtn.addEventListener('animationend', handler);
     });
 
-    document.getElementById('copyLinkBtn').addEventListener('click', () => {
+    document.getElementById('copyLinkBtn').addEventListener('click', async () => {
         const generatedLinkInput = document.getElementById('generatedLink');
         generatedLinkInput.select();
-        navigator.clipboard.writeText(generatedLinkInput.value)
-            .then(() => {
-                alert('Link copied to clipboard!');
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-                alert('Failed to copy the link. Please try again.');
-            });
+        try {
+            await navigator.clipboard.writeText(generatedLinkInput.value);
+            alert('Link copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+            alert('Failed to copy the link. Please try again.');
+        }
     });
 
     const savedPages = JSON.parse(localStorage.getItem('savedPages')) || [];
@@ -150,22 +155,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatButton = document.getElementById('chatButton');
     const chatModal = document.getElementById('chatModal');
     const closeChatModal = document.getElementById('closeChatModal');
+    const chatIframeContainer = document.getElementById('chatIframeContainer');
 
-    chatButton.addEventListener('click', () => {
-        chatModal.classList.remove('hidden');
+    chatButton.addEventListener('click', async () => {
+        const hash = getUrlParameter('state');
+        if (hash) {
+            const chatUrl = `https://m00nchat.netlify.app/?id=${hash}`;
+            chatIframeContainer.innerHTML = `<iframe src="${chatUrl}" class="chat-modal-main"></iframe>`;
+            chatModal.classList.remove('hidden');
+        } else {
+            alert('No state hash found in the URL.');
+        }
     });
 
     closeChatModal.addEventListener('click', () => {
         chatModal.classList.add('hidden');
     });
 
-    // Close the modal when clicking outside the chat content
     window.addEventListener('click', (event) => {
         if (event.target === chatModal) {
             chatModal.classList.add('hidden');
         }
     });
 });
+
+function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
 
 async function shareState() {
     const pinataApiKey = '9b2c19fe686b4a404823';
